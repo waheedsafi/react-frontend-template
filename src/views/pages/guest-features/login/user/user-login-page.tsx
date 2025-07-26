@@ -46,10 +46,9 @@ export default function UserLoginPage() {
         true
       );
       if (response.status == 200) {
-        navigate("/dashboard", { replace: true });
-        toast("Event has been created.");
         toast.success(response.data.message);
-      } else toast.error(response.response.data.message);
+        navigate("/dashboard", { replace: true });
+      }
     } catch (error: any) {
       toast.error(error.response?.data?.message);
       console.log(error, "Error");

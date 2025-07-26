@@ -1,3 +1,4 @@
+import AnimatedPath from "@/components/custom-ui/animation/animated-path";
 import AnimatedUserIcon from "@/components/custom-ui/icons/animated-user-icon";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
@@ -33,6 +34,15 @@ export default function LoginPage() {
         </span>
         {t("to_login")}
       </h1>
+      <svg width="45px" height="43px" viewBox="0 0 130 85">
+        <AnimatedPath
+          d="M10,50 l25,40 l85,-90"
+          stroke="#fafafa"
+          strokeWidth={20}
+          duration={2000}
+          fill="none"
+        />
+      </svg>
     </div>
   );
 }

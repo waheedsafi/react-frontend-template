@@ -1,8 +1,14 @@
+import NastranSpinner from "@/components/custom-ui/spinner/NastranSpinner";
 import type { User, UserPermission } from "@/database/models";
+import ProtectedRoute from "@/routes/protected-route";
 import Unauthorized from "@/views/error/unauthorized";
 import AuthLayout from "@/views/layouts/auth-layout";
 import GuestLayout from "@/views/layouts/guest-layout";
 import SiteLayout from "@/views/layouts/site-layout";
+import ConfigurationsPage from "@/views/pages/auth-features/configurations/configurations-page";
+import SettingsPage from "@/views/pages/auth-features/settings/settings-page";
+import UserEditPage from "@/views/pages/auth-features/users/edit/user-edit-page";
+import UserPage from "@/views/pages/auth-features/users/user-page";
 import LoginPage from "@/views/pages/guest-features/login/user/login-page";
 import UserLoginPage from "@/views/pages/guest-features/login/user/user-login-page";
 import AboutUsPage from "@/views/pages/main-site/about-us/about-us-page";
@@ -10,21 +16,69 @@ import ContactUsPage from "@/views/pages/main-site/contact-us/contact-us-page";
 import FaqsPage from "@/views/pages/main-site/faq/Faqs-page";
 import HomePage from "@/views/pages/main-site/home/home-page";
 import MainPage from "@/views/pages/main-site/main/main-page";
+import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
+const SuperDashboardPage = React.lazy(
+  () =>
+    import("@/views/pages/auth-features/dashboard/super/super-dashboard-page")
+);
 
 export const getSuperRouter = (user: User, authenticated: boolean) => {
   const permissions: Map<string, UserPermission> = user.permissions;
   return (
     <BrowserRouter>
       <Routes>
+        {/* Super Routes (Protected) */}
+        <Route path="/dashboard" element={<AuthLayout />}>
+          <Route
+            index
+            element={
+              <Suspense fallback={<NastranSpinner />}>
+                <SuperDashboardPage />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path="users"
+            element={
+              <ProtectedRoute
+                element={<UserPage />}
+                routeName="users"
+                permissions={permissions}
+                authenticated={authenticated}
+              />
+            }
+          />
+          <Route
+            path="users/:id"
+            element={
+              <ProtectedRoute
+                element={<UserEditPage />}
+                routeName="users"
+                permissions={permissions}
+                authenticated={authenticated}
+              />
+            }
+          />
+          <Route
+            path="configurations/:id"
+            element={
+              <ProtectedRoute
+                element={<ConfigurationsPage />}
+                routeName="configurations"
+                permissions={permissions}
+                authenticated={authenticated}
+              />
+            }
+          />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
         {/* Site Routes */}
         <Route path="/" element={<SiteLayout />}>
           {/* These routes will be passed as children */}
           {site}
         </Route>
-
-        {/* Super Routes (Protected) */}
-        <Route path="/" element={<AuthLayout />}></Route>
       </Routes>
     </BrowserRouter>
   );
@@ -786,15 +840,13 @@ export const getGuestRouter = () => {
 };
 const site = (
   <Route path="/" element={<MainPage />}>
-    <Route index element={<HomePage />} />
     {/* Default route (equivalent to `/`) */}
-    <Route path="home" element={<HomePage />} />
+    <Route index path="/" element={<HomePage />} />
+    <Route index path="home" element={<HomePage />} />
     <Route path="about_us" element={<AboutUsPage />} />
     <Route path="contact_us" element={<ContactUsPage />} />
     <Route path="faqs" element={<FaqsPage />} />
-    {/* Catch-all Route for Errors */}
     <Route path="*" element={<HomePage />} />
-    {/* Fallback for unknown routes */}
   </Route>
 );
-const error = <Route path="/unauthorized" element={<Unauthorized />}></Route>;
+// const error = <Route path="/unauthorized" element={<Unauthorized />}></Route>;

@@ -14,7 +14,7 @@ import CachedImage from "@/components/custom-ui/image/CachedImage";
 import { useGeneralAuthState } from "@/stores/auth/use-auth-store";
 
 export interface ProfileDropdownProps {
-  root: string;
+  root?: string;
   rootPath: string;
 }
 function ProfileDropdown(props: ProfileDropdownProps) {
@@ -24,40 +24,49 @@ function ProfileDropdown(props: ProfileDropdownProps) {
   const { t } = useTranslation();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="z-10 cursor-pointer ">
-        <div>
+      <DropdownMenuTrigger asChild className="cursor-pointer ">
+        <div className="relative">
           <CachedImage
             src={user?.profile}
             alt="Avatar"
             ShimmerIconClassName="size-[18px]"
-            shimmerClassName="size-[36px] ltr:mr-8 rtl:ml-8 shadow-lg border border-tertiary rounded-full size-[36px] select-none"
-            className="size-[36px] ltr:mr-8 rtl:ml-8 object-center object-cover shadow-lg border border-tertiary  rounded-full"
+            shimmerClassName="size-[36px] ltr:mr-8 rtl:ml-8 border bg-card rounded-full size-[36px] select-none"
+            className="size-[36px] ltr:mr-8 rtl:ml-8 object-center object-cover shadow-lg rounded-full"
             routeIdentifier={"profile"}
           />
+          <span className="absolute bottom-0 left-6 size-[9px] bg-green-400 border-[2px] border-card rounded-full" />
+          <span className="absolute bottom-[1px] left-[25px] size-[8px] animate-ping border-green-400 border-[1px] rounded-full" />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="z-10 rtl:text-end rtl:[&>*]:text-md-rtl ltr:[&>*]:text-lg-ltr">
+      <DropdownMenuContent className="z-20 rtl:text-end">
         <DropdownMenuLabel>
-          <h1>{t("signed_in_as")}</h1>
-          <h1 className="text-[14px] ">{user?.username}</h1>
+          <h1 className="rtl:text-md-rtl ltr:text-xs font-semibold">
+            {t("signed_in_as")}
+          </h1>
+          <h1 className="text-[14px] line-clamp-1 max-w-44 truncate">
+            {user?.username}
+          </h1>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="cursor-pointer"
+          className="cursor-pointer rtl:text-md-rtl ltr:text-xs rtl:font-semibold"
           onClick={async () => navigate("/profile")}
         >
           {t("profile")}
           <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
         </DropdownMenuItem>
+        {root && (
+          <DropdownMenuItem
+            className="cursor-pointer rtl:text-md-rtl ltr:text-xs rtl:font-semibold"
+            onClick={async () => navigate(rootPath)}
+          >
+            {t(root)}
+            <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        )}
+
         <DropdownMenuItem
-          className="cursor-pointer"
-          onClick={async () => navigate(rootPath)}
-        >
-          {t(root)}
-          <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="cursor-pointer"
+          className="cursor-pointer rtl:text-md-rtl ltr:text-xs rtl:font-semibold"
           onClick={async () => {
             // if (user.role.name === "donor") {
             //   await logoutDonor();

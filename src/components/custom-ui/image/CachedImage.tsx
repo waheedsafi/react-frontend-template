@@ -136,7 +136,7 @@ const CachedImage = React.forwardRef<HTMLImageElement, ImageProps>(
         >
           <Image
             className={cn(
-              "size-1/2 text-primary opacity-70",
+              "size-1/2 text-primary opacity-60",
               ShimmerIconClassName
             )}
           />

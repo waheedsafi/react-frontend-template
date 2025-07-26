@@ -1,11 +1,36 @@
-export const UserStatusEnum = {
+export const StatusEnum = {
   active: 1,
   block: 2,
 };
 
+export const ChecklistEnum = {
+  user: 1,
+};
 // Application
+export const RoleEnum = {
+  super: 1,
+  admin: 2,
+  user: 3,
+  debugger: 4,
+};
 export const PermissionEnum = {
+  dashboard: { name: "dashboard", sub: {} },
+  settings: {
+    name: "settings",
+    sub: {},
+  },
+  logs: { id: 1, name: "logs", sub: {} },
+  reports: { id: 2, name: "reports", sub: {} },
+  configurations: {
+    id: 3,
+    name: "configurations",
+    sub: {
+      configurations_job: 31,
+      configurations_checklist: 32,
+    },
+  },
   users: {
+    id: 4,
     name: "users",
     sub: {
       user_information: 1,
@@ -13,41 +38,30 @@ export const PermissionEnum = {
       user_permission: 3,
     },
   },
-  dashboard: { name: "dashboard", sub: {} },
-  reports: { name: "reports", sub: {} },
-  configurations: {
-    name: "configurations",
+  audit: { id: 5, name: "audit", sub: {} },
+  about: {
+    id: 6,
+    name: "about",
     sub: {
-      configurations_job: 21,
-      configurations_checklist: 22,
-      configurations_news_type: 23,
-      configurations_priority: 24,
+      director: 91,
+      manager: 92,
+      office: 93,
+      technical_sup: 94,
     },
   },
-  logs: { name: "logs", sub: {} },
-  audit: { name: "audit", sub: {} },
   approval: {
+    id: 7,
     name: "approval",
     sub: {
-      user: 31,
-      ngo: 32,
-      donor: 33,
+      user: 51,
     },
   },
   activity: {
+    id: 8,
     name: "activity",
     sub: {
-      user: 41,
-      password: 42,
+      user_activity: 71,
+      password_activity: 72,
     },
   },
-  settings: {
-    name: "settings",
-    sub: {},
-  },
-};
-export const RoleEnum = {
-  super: 1,
-  admin: 2,
-  user: 3,
 };

@@ -15,7 +15,7 @@ export default function DashboardNavbar() {
         <>
           <Burger />
           <Notifications />
-          <ProfileDropdown root={"visit_site"} rootPath="/" />
+          <ProfileDropdown rootPath="/" />
         </>
       )}
       <ThemeSwitch />

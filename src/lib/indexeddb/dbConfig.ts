@@ -11,7 +11,6 @@ export const dbConfigs: { [key: string]: IDBConfigI } = {
     version: 1,
     stores: [
       { name: "cmp", keyPath: "key", autoIncrement: true },
-      { name: "chat", keyPath: "key", autoIncrement: true },
       { name: "api", keyPath: "key", autoIncrement: true },
     ],
   },

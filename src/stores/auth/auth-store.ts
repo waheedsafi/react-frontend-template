@@ -8,7 +8,7 @@ import {
   setToken,
 } from "@/lib/utils";
 import type { User } from "@/database/models";
-import { UserStatusEnum } from "@/database/model-enums";
+import { StatusEnum } from "@/database/model-enums";
 
 type AuthUser = User;
 
@@ -32,7 +32,8 @@ const initUser: AuthUser = {
   full_name: "",
   username: "",
   email: "",
-  status: UserStatusEnum.block,
+  status: "",
+  status_id: StatusEnum.block,
   profile: "",
   role: { role: 3, name: "user" },
   job: "",
@@ -61,7 +62,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
         user.permissions = returnPermissionsMap(response.data?.permissions);
 
         if (rememberMe) {
-          setToken({ token: response.data.token, type: "user" });
+          setToken({ type: "user" });
         }
 
         set({ user, authenticated: true, loading: false });
@@ -89,13 +90,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   loadUser: async () => {
     const config = getConfiguration();
-    if (!config?.token) {
-      set({ loading: false });
-      return;
-    }
 
     try {
-      const response = await axiosClient.get(`auth-${config.type}`, {
+      const response = await axiosClient.get(`auth-${config?.type}`, {
         headers: { "Content-Type": "application/json" },
       });
 

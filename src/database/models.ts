@@ -1,11 +1,13 @@
 export type Role =
   | { role: 1; name: "super" }
   | { role: 2; name: "admin" }
-  | { role: 3; name: "user" };
+  | { role: 3; name: "user" }
+  | { role: 4; name: "debugger" };
 
 export interface SubPermission {
   id: number;
   name: string;
+  is_category: boolean;
   edit: boolean;
   view: boolean;
   delete: boolean;
@@ -29,7 +31,8 @@ export type User = {
   full_name: string;
   username: string;
   email: string;
-  status: number;
+  status: string;
+  status_id: number;
   profile: any;
   role: Role;
   contact: string;
@@ -53,5 +56,24 @@ export type Staff = {
   contact: string;
   email: string;
   id: string;
+};
+export interface BasicModel {
+  id: number;
+  name: string;
+  created_at: string;
+}
+export type CheckList = {
+  id: string;
+  type: string;
+  type_id: number;
+  name: string;
+  acceptable_extensions: string;
+  active: number;
+  file_size: number;
+  acceptable_mimes: string;
+  accept: string;
+  description: string;
+  saved_by: string;
+  created_at: string;
 };
 // Application

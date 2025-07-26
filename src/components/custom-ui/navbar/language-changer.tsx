@@ -37,12 +37,14 @@ export function LanguageChanger({ className }: { className?: string }) {
       <DropdownMenuTrigger asChild className={className}>
         <div className="rounded-full gap-x-2 text-fourth ltr:text-lg-ltr rtl:text-lg-rtl px-2 py-1 border flex items-center justify-center cursor-pointer bg-card hover:bg-fourth/10 transition-colors duration-300">
           <Globe className="w-4 h-4 pointer-events-none" />
-          <h1 className=" hidden sm:block">{t(selectLangName ?? "english")}</h1>
+          <h1 className=" hidden sm:block rtl:text-sm-rtl rtl:font-semibold">
+            {t(selectLangName ?? "english")}
+          </h1>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="">
         <DropdownMenuLabel>
-          <h1 className="rtl:text-[14px] ltr:text-xs font-semibold">
+          <h1 className="rtl:text-md-rtl ltr:text-xs font-semibold">
             {t("choose_a_language")}
           </h1>
         </DropdownMenuLabel>
@@ -50,7 +52,7 @@ export function LanguageChanger({ className }: { className?: string }) {
         {supportedLanguages.map(({ name, code }) => (
           <DropdownMenuItem
             key={code}
-            className={`rtl:justify-end text-primary/80 rtl:text-[15px] ltr:text-xs ${
+            className={`rtl:justify-end text-primary/80 rtl:text-lg-ltr rtl:font-semibold ltr:text-xs ${
               current === code ? "bg-slate-200 dark:bg-slate-900" : ""
             }`}
             onClick={() => changeLanguage(code)}

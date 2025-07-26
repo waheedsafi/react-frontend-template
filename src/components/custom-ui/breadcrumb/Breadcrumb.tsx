@@ -84,7 +84,7 @@ const BreadcrumbHome = React.forwardRef<SVGSVGElement, BreadcrumbHomeProps>(
         // aria-hidden="true"
         // data-slot="icon"
         className={cn(
-          "text-primary/60 fill-primary/60 hover:scale-105 size-[18px] hover:fill-primary/90 transition-[fill] duration-300 cursor-pointer",
+          "text-fourth/90 fill-fourth/90 hover:scale-105 size-[18px] hover:fill-fourth transition-[fill] duration-300 cursor-pointer",
           className
         )}
       >

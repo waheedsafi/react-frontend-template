@@ -5,10 +5,11 @@ export interface INastranSpinnerProps {
   className?: string;
   labelclassname?: string;
   label?: string;
+  showLabel?: boolean;
 }
 
 export default function NastranSpinner(props: INastranSpinnerProps) {
-  const { label, className, labelclassname } = props;
+  const { label, className, labelclassname, showLabel = true } = props;
   const { t } = useTranslation();
 
   return (
@@ -33,9 +34,11 @@ export default function NastranSpinner(props: INastranSpinnerProps) {
           fill="currentFill"
         />
       </svg>
-      <span className={cn("font-semibold rtl:text-[16px]", labelclassname)}>
-        {label ? label : `${t("loading")}...`}
-      </span>
+      {showLabel && (
+        <span className={cn("font-semibold rtl:text-[16px]", labelclassname)}>
+          {label ? label : `${t("loading")}...`}
+        </span>
+      )}
     </div>
   );
 }

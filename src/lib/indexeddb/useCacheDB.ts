@@ -6,7 +6,7 @@ import { dateExpired, generateExpireAt } from "./helper";
 const useCacheDB = () => {
   const getComponentCache = async (key: IDBValidKey): Promise<any> => {
     try {
-      return await getNativeItem("appCache", "cmp", key);
+      return await getNativeItem("cache_db", "cmp", key);
     } catch (error) {
       console.error("getComponentCache Error: ", error);
       return undefined; // or handle as needed
@@ -15,7 +15,7 @@ const useCacheDB = () => {
 
   const updateComponentCache = async (data: any) => {
     try {
-      return await updateNativeItem("appCache", "cmp", data);
+      return await updateNativeItem("cache_db", "cmp", data);
     } catch (error) {
       console.error("updateComponentCache Error: ", error);
       return undefined; // or handle as needed
@@ -24,7 +24,7 @@ const useCacheDB = () => {
 
   const getChatCache = async (key: IDBValidKey): Promise<any> => {
     try {
-      return await getNativeItem("appCache", "chat", key);
+      return await getNativeItem("cache_db", "chat", key);
     } catch (error) {
       console.error("getChatCache Error: ", error);
       return undefined; // or handle as needed
@@ -33,7 +33,7 @@ const useCacheDB = () => {
 
   const updateChatCache = async (data: any) => {
     try {
-      return await updateNativeItem("appCache", "chat", data);
+      return await updateNativeItem("cache_db", "chat", data);
     } catch (error) {
       console.error("updateChatCache Error: ", error);
       return undefined; // or handle as needed
@@ -45,11 +45,11 @@ const useCacheDB = () => {
     lang: string
   ): Promise<NameAndID[] | undefined> => {
     try {
-      const data = await getNativeItem("appCache", "api", key);
+      const data = await getNativeItem("cache_db", "api", key);
       if (data) {
         const cached = data as NameAndIDCache;
         if (dateExpired(cached.expireAt) || lang != cached.lang) {
-          await removeNativeItem("appCache", "api", key);
+          await removeNativeItem("cache_db", "api", key);
           return undefined;
         }
         const content = JSON.parse(data.data) as NameAndID[];
@@ -67,7 +67,7 @@ const useCacheDB = () => {
     try {
       const content = JSON.stringify(data.data);
       const expireAt = generateExpireAt(data.expireAt);
-      return await updateNativeItem("appCache", "api", {
+      return await updateNativeItem("cache_db", "api", {
         key: data.key,
         data: content,
         expireAt: expireAt,

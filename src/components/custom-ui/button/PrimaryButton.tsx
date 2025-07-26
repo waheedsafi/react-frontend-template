@@ -14,7 +14,9 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(
         ref={ref}
         size="sm"
         className={cn(
-          `bg-primary rounded cursor-pointer rtl:font-semibold ltr:pt-[2px] rtl:text-sm-rtl ltr:text-xl-ltr hover:shadow transition w-fit text-primary-foreground/80 shadow-md shadow-primary/50 px-5 duration-200 ease-linear hover:bg-primary hover:opacity-90 hover:text-primary-foreground`,
+          `bg-primary font-semibold rounded-sm cursor-pointer rtl:font-semibold rtl:text-sm-rtl ltr:text-lg-ltr
+           hover:shadow transition w-fit text-primary-foreground/80 shadow-md shadow-primary/50
+           px-5 py-2 leading-normal duration-200 ease-linear hover:bg-primary hover:opacity-90 hover:text-primary-foreground`,
           className
         )}
       >
