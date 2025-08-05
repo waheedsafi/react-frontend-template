@@ -1,8 +1,4 @@
-export type Role =
-  | { role: 1; name: "super" }
-  | { role: 2; name: "admin" }
-  | { role: 3; name: "user" }
-  | { role: 4; name: "debugger" };
+export type Role = { role: 1; name: "super" } | { role: 2; name: "debugger" };
 
 export interface SubPermission {
   id: number;
@@ -31,13 +27,11 @@ export type User = {
   full_name: string;
   username: string;
   email: string;
-  status: string;
-  status_id: number;
   profile: any;
   role: Role;
   contact: string;
   job: string;
-  department: string;
+  division: string;
   permissions: Map<string, UserPermission>;
   created_at: string;
   gender: string;
@@ -76,4 +70,26 @@ export type CheckList = {
   saved_by: string;
   created_at: string;
 };
+export interface IStaffSingle {
+  name_english: string;
+  name_farsi: string;
+  name_pashto: string;
+  contact: string;
+  email: string;
+  id: string;
+  picture: File | undefined | string;
+  optional_lang: string;
+  imageUrl: string;
+  editable: boolean;
+}
+export interface Slideshow {
+  id: string;
+  title: string;
+  description: string;
+  image: undefined | string;
+  date: string;
+  visible: number;
+  saved_by?: string;
+}
+
 // Application

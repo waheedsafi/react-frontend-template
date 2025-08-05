@@ -221,4 +221,11 @@ export const validateFile = (
 
   return file;
 };
+export const languageRegexMap: Record<string, RegExp> = {
+  english: /^[a-zA-Z0-9\s.,!?'"()\-_:;@#%&*\/\\[\]{}<>+=|~`^$]+$/, // Includes common punctuation & symbols
+  farsi:
+    /^[\u0600-\u06FF\u06F0-\u06F9\s،؟؛«».:!٪'"()\-_:;@#٪&*\/\\[\]{}<>+=|~`^$]+$/, // Includes Persian symbols & punctuation
+  pashto:
+    /^[\u0600-\u06FF\u06F0-\u06F9\s،؟؛«».:!٪'"()\-_:;@#٪&*\/\\[\]{}<>+=|~`^$]+$/, // Same as Farsi for coverage
+};
 // application

@@ -6,12 +6,15 @@ export const StatusEnum = {
 export const ChecklistEnum = {
   user: 1,
 };
+export const AboutStaffEnum = {
+  manager: 1,
+  director: 2,
+  technical_support: 3,
+};
 // Application
 export const RoleEnum = {
   super: 1,
-  admin: 2,
-  user: 3,
-  debugger: 4,
+  debugger: 2,
 };
 export const PermissionEnum = {
   dashboard: { name: "dashboard", sub: {} },
@@ -27,6 +30,8 @@ export const PermissionEnum = {
     sub: {
       configurations_job: 31,
       configurations_checklist: 32,
+      configurations_division: 33,
+      configurations_role: 34,
     },
   },
   users: {
@@ -47,6 +52,7 @@ export const PermissionEnum = {
       manager: 92,
       office: 93,
       technical_sup: 94,
+      slideshow: 95,
     },
   },
   approval: {

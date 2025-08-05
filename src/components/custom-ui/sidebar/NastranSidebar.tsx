@@ -52,6 +52,7 @@ export default function NastranSidebar() {
 
       items.push(
         <SidebarItem
+          key={permission}
           permission={permission}
           path={path}
           isActive={isActive}
@@ -103,10 +104,10 @@ export default function NastranSidebar() {
         className={`border border-primary grid grid-rows-[auto_1fr] overflow-hidden z-50 bg-primary rtl:transition-[right] ltr:transition-[left] duration-300 dark:bg-card dark:text-card-foreground text-primary-foreground absolute xl:relative top-[50%] xl:top-0 ltr:left-[-300px] ltr:xl:!left-0 rtl:xl:!right-0 rtl:right-[-300px] translate-y-[-50%] xl:translate-y-0 rounded-[12px] xl:rounded-none h-[98vh] xl:h-screen w-[240px] dark:border-primary/10`}
       >
         {/* Header */}
-        <div className="flex sticky top-2 flex-col dark:bg-card bg-primary z-50 items-center gap-y-2 border-b pb-4 border-secondary/20 mb-4">
+        <div className="flex sticky top-2 flex-col dark:bg-card bg-primary z-50 items-center gap-y-1 border-b pb-4 border-secondary/20 mb-4">
           <img
             src={`${import.meta.env.VITE_API_BASE_URL}/images/app-logo.png`}
-            className="size-[56px] text-primary/70 max-h-[76px] rounded-lg max-w-[76px]"
+            className="w-[64px] h-[56px] text-primary/70 max-h-[76px] rounded-lg max-w-[76px]"
           />
 
           <h1 className="ltr:text-xl-ltr rtl:text-3xl-rtl text-wrap w-[90%] font-semibold text-center">

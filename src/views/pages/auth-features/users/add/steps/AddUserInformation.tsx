@@ -13,7 +13,7 @@ export default function AddUserInformation() {
     setUserData({ ...userData, [name]: value });
   };
   return (
-    <div className="flex flex-col mt-10 w-full lg:w-[60%] 2xl:w-1/3 gap-y-6 pb-12">
+    <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-x-4 lg:gap-x-12 gap-y-8">
       <CustomInput
         required={true}
         label={t("full_name")}
@@ -80,16 +80,17 @@ export default function AddUserInformation() {
         placeholderText={t("search_item")}
         errorText={t("no_item")}
         onSelect={(selection: any) =>
-          setUserData({ ...userData, ["destination"]: selection })
+          setUserData({ ...userData, ["division"]: selection })
         }
-        lable={t("destination")}
+        lable={t("division")}
         required={true}
         requiredHint={`* ${t("required")}`}
-        selectedItem={userData["destination"]?.name}
+        selectedItem={userData["division"]?.name}
         placeHolder={t("select_destination")}
-        errorMessage={error.get("destination")}
-        apiUrl={"destinations"}
+        errorMessage={error.get("division")}
+        apiUrl={"divisions"}
         mode="single"
+        cacheData={false}
       />
       <APICombobox
         placeholderText={t("search_item")}
@@ -105,6 +106,7 @@ export default function AddUserInformation() {
         errorMessage={error.get("job")}
         apiUrl={"jobs"}
         mode="single"
+        cacheData={false}
       />
     </div>
   );

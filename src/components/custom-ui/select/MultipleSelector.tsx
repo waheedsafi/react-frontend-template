@@ -16,6 +16,7 @@ import useCacheDB from "@/lib/indexeddb/useCacheDB";
 import { useTranslation } from "react-i18next";
 import { useDebounce } from "@/hook/use-debounce";
 import { toast } from "sonner";
+import AnimatedItem from "@/hook/animated-item";
 
 interface GroupOption {
   [key: string]: Option[];
@@ -191,6 +192,8 @@ const MultipleSelector = React.forwardRef<
       left: 0,
       width: 0,
     });
+    const hasError = !!errorMessage;
+
     const [selected, setSelected] = React.useState<Option[]>(value || []);
     const { getApiCache, updateApiCache } = useCacheDB();
     const { i18n } = useTranslation();
@@ -506,6 +509,23 @@ const MultipleSelector = React.forwardRef<
       }
       return false;
     };
+    const errorComponent = React.useMemo(() => {
+      return hasError ? (
+        <AnimatedItem
+          springProps={{
+            from: { opacity: 0 },
+            to: { opacity: 1 },
+            config: { mass: 1, tension: 170, friction: 26 },
+            reset: true,
+          }}
+          intersectionArgs={{ once: true, rootMargin: "-5% 0%" }}
+        >
+          <h1 className="text-red-400 text-start capitalize rtl:text-sm rtl:font-medium ltr:text-sm-ltr">
+            {errorMessage}
+          </h1>
+        </AnimatedItem>
+      ) : undefined;
+    }, [hasError]);
     return (
       <Command
         {...commandProps}
@@ -546,7 +566,7 @@ const MultipleSelector = React.forwardRef<
               "cursor-text": !disabled && selected.length !== 0,
             },
             !hideClearAllButton && "pe-9",
-            errorMessage ? "border-red-400" : "border-input",
+            hasError ? "border-red-400" : "border-input",
             className
           )}
           onClick={() => {
@@ -562,7 +582,7 @@ const MultipleSelector = React.forwardRef<
                   className={cn(
                     `animate-fadeIn relative ltr:text-xl-ltr ${
                       subErrorExist(option) ? "bg-red-500" : "bg-primary"
-                    } inline-flex h-fit cursor-default rtl:text-xl-rtl items- text-start rounded-md border border-solid rtl:ps-10 rtl:pe-2 ltr:pe-10 ltr:pl-2 rtl:pr-2 font-medium text-primary-foreground transition-all hover:bg-primary/70 disabled:cursor-not-allowed disabled:opacity-50 data-[fixed]:pe-2`,
+                    } inline-flex h-fit cursor-default ltr:text-lg-ltr rtl:text-xl-rtl items- text-start rounded-md border border-solid rtl:ps-10 rtl:pe-2 ltr:pe-10 ltr:pl-2 rtl:pr-2 font-medium text-primary-foreground transition-all hover:bg-primary/70 disabled:cursor-not-allowed disabled:opacity-50 data-[fixed]:pe-2`,
                     badgeClassName
                   )}
                   data-fixed={option.fixed}
@@ -737,12 +757,7 @@ const MultipleSelector = React.forwardRef<
             </div>,
             document.body
           )}
-
-        {errorMessage && (
-          <h1 className="rtl:text-sm-rtl ltr:text-sm-ltr capitalize text-start text-red-400">
-            {errorMessage}
-          </h1>
-        )}
+        {errorComponent}
       </Command>
     );
   }

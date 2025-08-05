@@ -39,7 +39,7 @@ const BreadcrumbSeparator = React.forwardRef<
       preserveAspectRatio="none"
       aria-hidden="true"
       className={cn(
-        "text-primary/15 h-[36px] w-[20px] rtl:rotate-180",
+        "text-primary/15 h-[40px] w-[20px] rtl:rotate-180",
         className
       )}
     >
@@ -84,7 +84,7 @@ const BreadcrumbHome = React.forwardRef<SVGSVGElement, BreadcrumbHomeProps>(
         // aria-hidden="true"
         // data-slot="icon"
         className={cn(
-          "text-fourth/90 fill-fourth/90 hover:scale-105 size-[18px] hover:fill-fourth transition-[fill] duration-300 cursor-pointer",
+          "text-primary/60 fill-primary/60 hover:scale-105 size-[18px] hover:fill-primary/90 transition-[fill] duration-300 cursor-pointer",
           className
         )}
       >

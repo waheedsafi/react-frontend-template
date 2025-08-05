@@ -359,8 +359,8 @@ export function UserTable() {
                   onClick: () => {},
                 },
                 {
-                  name: "destination",
-                  translate: t("department"),
+                  name: "division",
+                  translate: t("division"),
                   onClick: () => {},
                 },
                 { name: "status", translate: t("status"), onClick: () => {} },
@@ -463,7 +463,7 @@ export function UserTable() {
                   {item.username}
                 </TableCell>
                 <TableCell>
-                  <h1 className="truncate">{item?.department}</h1>
+                  <h1 className="truncate">{item?.division}</h1>
                   <h1 className="truncate text-primary/90">{item?.job}</h1>
                 </TableCell>
                 <TableCell

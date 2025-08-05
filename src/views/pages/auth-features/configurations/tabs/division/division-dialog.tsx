@@ -11,25 +11,26 @@ import { Button } from "@/components/ui/button";
 import ButtonSpinner from "@/components/custom-ui/spinner/ButtonSpinner";
 import { useEffect, useState } from "react";
 import PrimaryButton from "@/components/custom-ui/button/PrimaryButton";
-import CustomInput from "@/components/custom-ui/input/CustomInput";
 import axiosClient from "@/lib/axois-client";
 import { setServerError, validate } from "@/validation/validation";
-import type { BasicModel } from "@/database/models";
 import { toast } from "sonner";
 import Shimmer from "@/components/custom-ui/shimmer/shimmer";
+import type { BasicModel } from "@/database/models";
+import CustomInput from "@/components/custom-ui/input/CustomInput";
 
-export interface JobDialogProps {
-  onComplete: (job: BasicModel) => void;
-  job?: BasicModel;
+export interface RolesDialogProps {
+  onComplete: (division: BasicModel, isEdited: boolean) => void;
+  onCancel?: () => void;
+  division?: BasicModel;
 }
-export default function JobDialog(props: JobDialogProps) {
-  const { onComplete, job } = props;
+export default function RolesDialog(props: RolesDialogProps) {
+  const { onComplete, division, onCancel } = props;
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState(new Map<string, string>());
   const [userData, setUserData] = useState({
-    farsi: "",
     english: "",
+    farsi: "",
     pashto: "",
   });
   const { modelOnRequestHide } = useModelOnRequestHide();
@@ -37,7 +38,7 @@ export default function JobDialog(props: JobDialogProps) {
 
   const fetch = async () => {
     try {
-      const response = await axiosClient.get(`jobs/${job?.id}`);
+      const response = await axiosClient.get(`divisions/${division?.id}`);
       if (response.status === 200) {
         setUserData(response.data);
       }
@@ -47,13 +48,10 @@ export default function JobDialog(props: JobDialogProps) {
     setFetching(false);
   };
   useEffect(() => {
-    if (job) fetch();
+    if (division) fetch();
   }, []);
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
-  const store = async () => {
+
+  const action = async () => {
     try {
       if (loading) return;
       setLoading(true);
@@ -62,15 +60,15 @@ export default function JobDialog(props: JobDialogProps) {
         [
           {
             name: "english",
-            rules: ["required"],
+            rules: ["required", "max:100", "min:3"],
           },
           {
             name: "farsi",
-            rules: ["required"],
+            rules: ["required", "max:100", "min:3"],
           },
           {
             name: "pashto",
-            rules: ["required"],
+            rules: ["required", "max:100", "min:3"],
           },
         ],
         userData,
@@ -78,63 +76,29 @@ export default function JobDialog(props: JobDialogProps) {
       );
       if (!passed) return;
       // 2. Store
-      const response = await axiosClient.post("jobs", {
-        english: userData.english,
-        farsi: userData.farsi,
-        pashto: userData.pashto,
-      });
+      const formData = new FormData();
+      if (division?.id) formData.append("id", division?.id.toString());
+      formData.append("english", userData.english);
+      formData.append("farsi", userData.farsi);
+      formData.append("pashto", userData.pashto);
+      const response = division
+        ? await axiosClient.post("divisions", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            params: {
+              _method: "PUT", // Laravel treats this POST as a PUT
+            },
+          })
+        : await axiosClient.post("divisions", formData);
       if (response.status === 200) {
         toast.success(response.data.message);
-        onComplete(response.data.job);
+        if (division) onComplete(response.data.division, true);
+        else onComplete(response.data.division, false);
         modelOnRequestHide();
       }
     } catch (error: any) {
       setServerError(error.response.data.errors, setError);
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  const update = async () => {
-    try {
-      if (loading) return;
-      setLoading(true);
-      // 1. Validate form
-      const passed = await validate(
-        [
-          {
-            name: "english",
-            rules: ["required"],
-          },
-          {
-            name: "farsi",
-            rules: ["required"],
-          },
-          {
-            name: "pashto",
-            rules: ["required"],
-          },
-        ],
-        userData,
-        setError
-      );
-      if (!passed) return;
-      // 2. update
-      const response = await axiosClient.put(`jobs`, {
-        id: job?.id,
-        english: userData.english,
-        farsi: userData.farsi,
-        pashto: userData.pashto,
-      });
-      if (response.status === 200) {
-        toast.success(response.data.message);
-
-        onComplete(response.data.job);
-        modelOnRequestHide();
-      }
-    } catch (error: any) {
-      toast.error(error.response.data.message);
-
       console.log(error);
     } finally {
       setLoading(false);
@@ -148,14 +112,19 @@ export default function JobDialog(props: JobDialogProps) {
       <Shimmer className="h-12" />
     </CardContent>
   );
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+  };
   return (
     <Card className="w-full px-2 md:w-fit md:min-w-[700px] self-center bg-card my-12">
       <CardHeader className="relative text-start">
         <CardTitle className="rtl:text-4xl-rtl ltr:text-3xl-ltr text-tertiary">
-          {job ? t("edit") : t("add")}
+          {division ? t("edit") : t("add")}
         </CardTitle>
       </CardHeader>
-      {job && fetching ? (
+      {/* {slideshow && fetching ? ( */}
+      {division && fetching ? (
         loader
       ) : (
         <>
@@ -214,21 +183,26 @@ export default function JobDialog(props: JobDialogProps) {
               }
             />
           </CardContent>
-          <CardFooter className="flex justify-between">
+          <CardFooter className="flex flex-wrap gap-4 justify-center xxl:justify-between">
             <Button
               className="rtl:text-xl-rtl ltr:text-lg-ltr"
               variant="outline"
-              onClick={modelOnRequestHide}
+              onClick={() => {
+                modelOnRequestHide();
+                if (onCancel) onCancel();
+              }}
             >
               {t("cancel")}
             </Button>
             <PrimaryButton
               disabled={loading}
-              onClick={job ? update : store}
+              onClick={action}
               className={`${loading && "opacity-90"}`}
               type="submit"
             >
-              <ButtonSpinner loading={loading}>{t("save")}</ButtonSpinner>
+              <ButtonSpinner loading={loading}>
+                {t(division ? "update" : "save")}
+              </ButtonSpinner>
             </PrimaryButton>
           </CardFooter>
         </>

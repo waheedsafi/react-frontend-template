@@ -1,4 +1,3 @@
-// stores/useAuthStore.ts
 import { create } from "zustand";
 import axiosClient from "@/lib/axois-client";
 import {
@@ -8,7 +7,6 @@ import {
   setToken,
 } from "@/lib/utils";
 import type { User } from "@/database/models";
-import { StatusEnum } from "@/database/model-enums";
 
 type AuthUser = User;
 
@@ -32,13 +30,11 @@ const initUser: AuthUser = {
   full_name: "",
   username: "",
   email: "",
-  status: "",
-  status_id: StatusEnum.block,
   profile: "",
-  role: { role: 3, name: "user" },
+  role: { role: 1, name: "super" },
   job: "",
   contact: "",
-  department: "",
+  division: "",
   created_at: "",
   gender: "",
   permissions: new Map(),

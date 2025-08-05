@@ -17,7 +17,6 @@ import APICombobox from "@/components/custom-ui/combobox/APICombobox";
 import CustomCheckbox from "@/components/custom-ui/checkbox/CustomCheckbox";
 import CustomInput from "@/components/custom-ui/input/CustomInput";
 import MultipleSelector from "@/components/custom-ui/select/MultipleSelector";
-import NastranSpinner from "@/components/custom-ui/spinner/NastranSpinner";
 import type { CheckList } from "@/database/models";
 import type { Option } from "@/lib/types";
 import { toast } from "sonner";
@@ -25,6 +24,7 @@ import CustomTextarea from "@/components/custom-ui/textarea/CustomTextarea";
 import BorderContainer from "@/components/custom-ui/container/BorderContainer";
 import MultiTabInput from "@/components/custom-ui/input/mult-tab/MultiTabInput";
 import SingleTab from "@/components/custom-ui/input/mult-tab/parts/SingleTab";
+import Shimmer from "@/components/custom-ui/shimmer/shimmer";
 
 export interface ChecklistDialogProps {
   onComplete: (checkList: CheckList) => void;
@@ -72,8 +72,8 @@ const defaultExtensions = [
 ];
 export default function ChecklistDialog(props: ChecklistDialogProps) {
   const { onComplete, checklist } = props;
-  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [fetching, setFetching] = useState(true);
 
   const [error, setError] = useState(new Map<string, string>());
   const [userData, setUserData] = useState<{
@@ -106,15 +106,14 @@ export default function ChecklistDialog(props: ChecklistDialogProps) {
   const { t } = useTranslation();
   const fetch = async () => {
     try {
-      setLoading(true);
-      const response = await axiosClient.get(`ngo-checklist/${checklist?.id}`);
+      const response = await axiosClient.get(`checklists/${checklist?.id}`);
       if (response.status === 200) {
         setUserData(response.data);
       }
     } catch (error: any) {
       console.log(error);
     } finally {
-      setLoading(false);
+      setFetching(false);
     }
   };
   useEffect(() => {
@@ -164,7 +163,7 @@ export default function ChecklistDialog(props: ChecklistDialogProps) {
         setError
       );
       if (!passed) return;
-      const response = await axiosClient.post("checklist/store", {
+      const response = await axiosClient.post("checklists", {
         ...userData,
       });
       if (response.status === 200) {
@@ -220,7 +219,7 @@ export default function ChecklistDialog(props: ChecklistDialogProps) {
       );
       if (!passed) return;
       // 2. update
-      const response = await axiosClient.post(`checklist/update`, {
+      const response = await axiosClient.put(`checklists`, {
         ...userData,
         id: checklist?.id,
       });
@@ -236,19 +235,28 @@ export default function ChecklistDialog(props: ChecklistDialogProps) {
       setSaving(false);
     }
   };
-
+  const loader = (
+    <CardContent className="space-y-5">
+      <Shimmer className="h-16" />
+      <Shimmer className="h-12" />
+      <Shimmer className="h-12" />
+      <Shimmer className="h-12" />
+      <Shimmer className="h-12" />
+      <Shimmer className="h-20" />
+    </CardContent>
+  );
   return (
-    <Card className="w-full lg:w-1/2 2xl:w-1/3 self-center my-8 [backdrop-filter:blur(20px)] bg-card dark:bg-card-secondary">
+    <Card className="w-full px-2 md:w-fit md:min-w-[700px] self-center bg-card my-12">
       <CardHeader className="relative text-start">
         <CardTitle className="rtl:text-4xl-rtl ltr:text-3xl-ltr text-tertiary">
           {checklist ? t("edit") : t("add")}
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col w-full items-stretch gap-y-4">
-        {loading ? (
-          <NastranSpinner />
-        ) : (
-          <>
+      {fetching && checklist ? (
+        loader
+      ) : (
+        <>
+          <CardContent className="flex flex-col w-full items-stretch gap-y-4">
             <BorderContainer
               title={t("name")}
               required={true}
@@ -274,7 +282,7 @@ export default function ChecklistDialog(props: ChecklistDialogProps) {
                 highlightColor="bg-tertiary"
                 userData={userData}
                 errorData={error}
-                placeholder={t("content")}
+                placeholder={t("detail")}
                 className="rtl:text-xl-rtl rounded-none border-t border-x-0 border-b-0"
                 tabsClassName="gap-x-5 px-3"
               >
@@ -294,15 +302,16 @@ export default function ChecklistDialog(props: ChecklistDialogProps) {
               selectedItem={userData["type"]?.name}
               placeHolder={t("select_a")}
               errorMessage={error.get("type")}
-              apiUrl={"ngo/checklist/types"}
+              apiUrl={"checklists/types"}
               mode="single"
               requiredHint={`* ${t("required")}`}
+              cacheData={false}
             />
             <CustomInput
               size_="sm"
               required={true}
               requiredHint={`* ${t("required")}`}
-              label={t("file_size")}
+              label={t("file_size") + "/KB"}
               placeholder={t("detail")}
               defaultValue={userData["file_size"]}
               type="number"
@@ -350,25 +359,25 @@ export default function ChecklistDialog(props: ChecklistDialogProps) {
               placeholder={t("detail")}
               rows={5}
             />
-          </>
-        )}
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button
-          className="rtl:text-xl-rtl ltr:text-lg-ltr"
-          variant="outline"
-          onClick={modelOnRequestHide}
-        >
-          {t("cancel")}
-        </Button>
-        <PrimaryButton
-          disabled={saving}
-          onClick={checklist ? update : store}
-          type="submit"
-        >
-          <ButtonSpinner loading={saving}>{t("save")}</ButtonSpinner>
-        </PrimaryButton>
-      </CardFooter>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button
+              className="rtl:text-xl-rtl ltr:text-lg-ltr"
+              variant="outline"
+              onClick={modelOnRequestHide}
+            >
+              {t("cancel")}
+            </Button>
+            <PrimaryButton
+              disabled={saving}
+              onClick={checklist ? update : store}
+              type="submit"
+            >
+              <ButtonSpinner loading={saving}>{t("save")}</ButtonSpinner>
+            </PrimaryButton>
+          </CardFooter>
+        </>
+      )}
     </Card>
   );
 }

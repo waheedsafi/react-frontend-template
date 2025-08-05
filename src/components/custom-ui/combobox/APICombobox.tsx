@@ -209,7 +209,7 @@ function APICombobox(props: IAPIComboboxProps) {
             ) : translate ? (
               t(selected)
             ) : (
-              selected
+              <h1 className="truncate">{selected}</h1>
             )}
             {showIcon && (
               <ChevronsUpDown className="h-4 w-4 ltr:ml-4 rtl:mr-4 shrink-0 opacity-50" />

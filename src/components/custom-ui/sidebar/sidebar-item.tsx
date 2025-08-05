@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import NetworkSvg from "@/components/custom-ui/image/NetworkSvg";
 import type { UserPermission, SubPermission } from "@/database/models";
 import AnimatedItem from "@/hook/animated-item";
@@ -73,23 +73,21 @@ export function SidebarItem({
         </div>
 
         {categories.length > 0 && (
-          <div className="ml-auto">
-            {showDropdown ? (
-              <ChevronUp className="size-4 text-white/70 ltr:mr-2 rtl:ml-2" />
-            ) : (
-              <ChevronDown className="size-4 text-white/70 ltr:mr-2 rtl:ml-2" />
-            )}
-          </div>
+          <ChevronRight
+            className={`size-[14px] text-white/70 ltr:mr-2 transition-transform duration-300 ease-in-out rtl:ml-2 ${
+              showDropdown ? "rotate-90" : "rtl:rotate-180"
+            }`}
+          />
         )}
       </div>
 
       {showDropdown && categories.length > 0 && (
-        <ul className="mt-1 space-y-1">
+        <div className="relative ltr:ml-5 rtl:mr-5 mt-1 mb-4 space-y-1 ltr:pl-2 rtl:pr-2 before:absolute before:top-3 before:bottom-0 rtl:before:right-1 ltr:before:left-1 before:w-px rounded-full before:bg-tertiary/30">
           {categories.map((cat, index: number) => {
             const selected = selectedSubId === cat.id;
             return (
               <AnimatedItem
-                key={cat.name}
+                key={cat.id}
                 springProps={{
                   from: {
                     opacity: 0,
@@ -113,26 +111,22 @@ export function SidebarItem({
                   once: true,
                 }}
               >
-                <li
-                  key={cat.id}
-                  onClick={() => handleCategoryClick(cat)}
-                  className={`cursor-pointer mx-auto text-primary-foreground/85 rtl:text-lg-rtl rtl:font-bold ltr:text-md-ltr flex items-center gap-x-2 py-1 px-2 w-[85%] rounded-sm transition-colors ${
-                    selected
-                      ? "font-semibold bg-blue-500/10"
-                      : " hover:opacity-75"
-                  }`}
-                >
-                  <Check
-                    className={`size-4 ${
-                      selected ? "text-tertiary stroke-3" : " invisible"
+                <div className="relative flex items-center before:absolute ltr:before:left-1 rtl:before:right-1 before:top-1/2 before:w-3 before:h-px before:bg-tertiary/40">
+                  <button
+                    onClick={() => handleCategoryClick(cat)}
+                    className={`cursor-pointer ltr:ml-5 rtl:mr-5 rtl:text-lg-rtl rtl:font-bold ltr:text-md-ltr flex items-center gap-x-2 py-1 px-2 w-[85%] rounded-sm transition-colors ${
+                      selected
+                        ? "font-semibold bg-blue-500/10 dark:text-primary"
+                        : "hover:opacity-75 text-primary-foreground/85 dark:text-primary/75"
                     }`}
-                  />
-                  {t(cat.name)}
-                </li>
+                  >
+                    {t(cat.name)}
+                  </button>
+                </div>
               </AnimatedItem>
             );
           })}
-        </ul>
+        </div>
       )}
     </>
   );

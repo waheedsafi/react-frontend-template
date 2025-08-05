@@ -2,8 +2,9 @@ import React, { type ReactElement } from "react";
 import type { ReactNode } from "react";
 import SingleTab from "./parts/SingleTab";
 import OptionalTab from "./parts/OptionalTab";
-import { cn } from "@/lib/utils";
+import { cn, languageRegexMap } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import AnimatedItem from "@/hook/animated-item";
 
 export interface MultiTabInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -51,8 +52,24 @@ const MultiTabInput = React.forwardRef<HTMLInputElement, MultiTabInputProps>(
     };
 
     const inputOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value, name } = e.target;
-      onChanged(value, name);
+      const { name } = e.target;
+      const rawValue = e.target.value;
+
+      const activeLanguage = selectedTab.toLowerCase();
+      const allowedCharRegex = languageRegexMap[activeLanguage];
+
+      // Remove all disallowed characters
+      const filteredValue = rawValue
+        .split("")
+        .filter((char) => allowedCharRegex.test(char))
+        .join("");
+
+      // If characters were stripped, prevent user from seeing them even briefly
+      if (filteredValue !== rawValue) {
+        e.preventDefault(); // not required but safe
+      }
+
+      onChanged(filteredValue, name);
     };
 
     const processTabs = (children: ReactNode) => {
@@ -162,7 +179,9 @@ const MultiTabInput = React.forwardRef<HTMLInputElement, MultiTabInputProps>(
         {/* Title */}
         <h1 className="ltr:text-2xl-ltr rtl:text-xl-rtl text-start">{title}</h1>
         {/* Header */}
-        <div className={cn("flex gap-x-4", tabsClassName)}>{elements}</div>
+        <div className={cn("flex flex-wrap gap-y-2 gap-x-4", tabsClassName)}>
+          {elements}
+        </div>
         {/* Body */}
         <Input
           type={type}
@@ -172,7 +191,7 @@ const MultiTabInput = React.forwardRef<HTMLInputElement, MultiTabInputProps>(
           key={selectedTab}
           placeholder={placeholder}
           onChange={inputOnchange}
-          defaultValue={selectTabValue}
+          value={selectTabValue || ""}
           style={{
             height: "50px",
           }}
@@ -185,12 +204,32 @@ const MultiTabInput = React.forwardRef<HTMLInputElement, MultiTabInputProps>(
           )}
         />
         {errorMessages.map((error: string, index: number) => (
-          <h1
+          <AnimatedItem
             key={index}
-            className="rtl:text-md-rtl ltr:text-sm-ltr px-2 capitalize text-start text-red-400"
+            springProps={{
+              from: {
+                opacity: 0,
+                transform: "translateY(-8px)",
+              },
+              config: {
+                mass: 1,
+                tension: 210,
+                friction: 20,
+              },
+              to: {
+                opacity: 1,
+                transform: "translateY(0px)",
+
+                delay: index * 100,
+              },
+              delay: index * 100,
+            }}
+            intersectionArgs={{ once: true, rootMargin: "-5% 0%" }}
           >
-            {error}
-          </h1>
+            <h1 className="text-red-400 text-start capitalize rtl:text-sm rtl:font-medium ltr:text-sm-ltr">
+              {error}
+            </h1>
+          </AnimatedItem>
         ))}
       </div>
     );

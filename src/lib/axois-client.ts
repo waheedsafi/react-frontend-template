@@ -52,5 +52,6 @@ export async function refreshAccessToken() {
   } catch (error: any) {
     throw error;
   }
+  return true;
 }
 export default axiosClient;

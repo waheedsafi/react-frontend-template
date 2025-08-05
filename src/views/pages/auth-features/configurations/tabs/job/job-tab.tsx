@@ -178,13 +178,13 @@ export default function JobTab(props: JobTabProps) {
           {loading ? (
             <TableRow>
               <TableCell>
-                <Shimmer className="h-[24px] bg-primary/30 w-full rounded-sm" />
+                <Shimmer className="h-[24px] w-full rounded-sm" />
               </TableCell>
               <TableCell>
-                <Shimmer className="h-[24px] bg-primary/30 w-full rounded-sm" />
+                <Shimmer className="h-[24px] w-full rounded-sm" />
               </TableCell>
               <TableCell>
-                <Shimmer className="h-[24px] bg-primary/30 w-full rounded-sm" />
+                <Shimmer className="h-[24px] w-full rounded-sm" />
               </TableCell>
             </TableRow>
           ) : (

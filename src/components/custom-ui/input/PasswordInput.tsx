@@ -39,7 +39,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
       onChange,
       ...rest
     } = props;
-    const error = errorMessage != undefined;
+    const error = !!errorMessage;
     const { t } = useTranslation();
     const strength = checkStrength(
       isString(defaultValue) ? defaultValue : "",
@@ -113,11 +113,11 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
               height: "50px",
             }}
             className={cn(
-              `focus-visible:ring-0 focus-visible:border-primary/30 focus-visible:ring-offset-0 ${
+              `[&::-webkit-outer-spin-button]:appearance-none focus-visible:border-fourth/60 appearance-none placeholder:text-primary/60 ltr:text-sm rtl:text-sm rtl:font-semibold focus-visible:ring-0 rounded focus-visible:shadow-sm focus-visible:ring-offset-0 transition-[border] bg-card dark:bg-black/30 ${
                 startContent
                   ? "rtl:pr-[42px] ltr:ps-[42px]"
                   : "rtl:pr-[12px] ltr:ps-[12px]"
-              } ${className} ${error && "border-red-400 border"}`,
+              } ${className} ${error && "border-red-400"}`,
               className
             )}
             type={type}

@@ -162,7 +162,9 @@ const MultiTabTextarea = React.forwardRef<
       {/* Title */}
       <h1 className="ltr:text-2xl-ltr rtl:text-xl-rtl text-start">{title}</h1>
       {/* Header */}
-      <div className={cn("flex gap-x-4", tabsClassName)}>{elements}</div>
+      <div className={cn("flex flex-wrap gap-y-2 gap-x-4", tabsClassName)}>
+        {elements}
+      </div>
       {/* Body */}
       <Textarea
         {...rest}

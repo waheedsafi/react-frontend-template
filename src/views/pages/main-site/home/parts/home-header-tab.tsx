@@ -1,4 +1,5 @@
 import TertiaryButton from "@/components/custom-ui/button/tertiary-button";
+import CachedImage from "@/components/custom-ui/image/CachedImage";
 import AnimatedItem from "@/hook/animated-item";
 import { useTranslation } from "react-i18next";
 
@@ -64,11 +65,13 @@ export function HomeHeaderTab(props: HomeHeaderItemProps) {
       </TertiaryButton>
       <div
         className="-order-1 mb-2 lg:mb-20 w-[80%] xxl:w-[40%] sm:w-[350px] sm:h-[450px] xl:h-[500px] xl:w-[400px] lg:[transform:perspective(1000px)_rotateY(-12deg)] lg:absolute lg:translate-x-0 lg:top-1/2 lg:-translate-y-1/2 rtl:left-1/2 rtl:lg:left-[5%] rtl:xl:left-[10%] ltr:lg:right-[5%] ltr:xl:right-[10%] z-10
-          p-6 bg-white/10 backdrop-blur-md backdrop-saturate-150 rounded-xl flex justify-center items-center"
+          xxl:p-6 p-3 bg-white/10 backdrop-blur-md backdrop-saturate-150 rounded-xl flex justify-center items-center"
       >
-        <img
+        <CachedImage
           src={image}
+          shimmerClassName="hover:scale-105 transition-transform w-full h-full"
           className="hover:scale-105 transition-transform w-full h-full"
+          routeIdentifier="public"
         />
       </div>
     </div>

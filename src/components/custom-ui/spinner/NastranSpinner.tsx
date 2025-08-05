@@ -5,17 +5,23 @@ export interface INastranSpinnerProps {
   className?: string;
   labelclassname?: string;
   label?: string;
-  showLabel?: boolean;
+  show_label?: boolean;
 }
 
 export default function NastranSpinner(props: INastranSpinnerProps) {
-  const { label, className, labelclassname, showLabel = true } = props;
+  const {
+    label,
+    className,
+    labelclassname,
+    show_label = true,
+    ...restProps
+  } = props;
   const { t } = useTranslation();
 
   return (
     <div role="status" className="flex flex-col items-center justify-center">
       <svg
-        {...props}
+        {...restProps}
         aria-hidden="true"
         className={cn(
           "w-8 h-8 text-primary/90 animate-spin fill-tertiary",
@@ -34,7 +40,7 @@ export default function NastranSpinner(props: INastranSpinnerProps) {
           fill="currentFill"
         />
       </svg>
-      {showLabel && (
+      {show_label && (
         <span className={cn("font-semibold rtl:text-[16px]", labelclassname)}>
           {label ? label : `${t("loading")}...`}
         </span>

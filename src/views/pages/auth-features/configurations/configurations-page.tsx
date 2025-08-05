@@ -12,6 +12,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/custom-ui/breadcrumb/Breadcrumb";
 import { useLocation } from "react-router";
+import DivisionTab from "@/views/pages/auth-features/configurations/tabs/division/division-tab";
+import RolesTab from "@/views/pages/auth-features/configurations/tabs/roles/roles-tab";
 
 export default function ConfigurationsPage() {
   const { user } = useUserAuthState();
@@ -36,9 +38,6 @@ export default function ConfigurationsPage() {
         value={selectedId}
         className="flex flex-col items-center pb-12"
       >
-        {/* <TabsList className="px-0 pb-1 h-fit mt-2 flex-wrap overflow-x-auto overflow-y-hidden justify-center gap-y-1 gap-x-1">
-          {tableList}
-        </TabsList> */}
         <TabsContent
           value={PermissionEnum.configurations.sub.configurations_job.toString()}
           className="w-full px-4 pt-8"
@@ -50,6 +49,18 @@ export default function ConfigurationsPage() {
           className="w-full px-4 pt-8"
         >
           <ChecklistTab permissions={per} />
+        </TabsContent>
+        <TabsContent
+          value={PermissionEnum.configurations.sub.configurations_division.toString()}
+          className="w-full px-4 pt-8"
+        >
+          <DivisionTab permissions={per} />
+        </TabsContent>
+        <TabsContent
+          value={PermissionEnum.configurations.sub.configurations_role.toString()}
+          className="w-full px-4 pt-8"
+        >
+          <RolesTab permissions={per} />
         </TabsContent>
       </Tabs>
     </>

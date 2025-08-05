@@ -14,7 +14,7 @@ export default function HomeHeader() {
   const { t, i18n } = useTranslation();
   const initialize = async () => {
     try {
-      const response = await axiosClient.get(`books`);
+      const response = await axiosClient.get(`slideshows/public`);
       if (response.status === 200) {
         setData({
           tab: response.data.length != 0 ? response.data[0].title : "",

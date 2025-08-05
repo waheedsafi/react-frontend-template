@@ -13,18 +13,18 @@ import type { IUserPermission } from "@/lib/types";
 export interface PermissionSubProps {
   permission: IUserPermission;
   mainActions: {
-    view: (value: boolean, permission: string) => void;
-    add: (value: boolean, permission: string) => void;
-    edit: (value: boolean, permission: string) => void;
-    delete: (value: boolean, permission: string) => void;
-    singleRow: (value: boolean, permission: string) => void;
+    view: (value: boolean, permissionId: number) => void;
+    add: (value: boolean, permissionId: number) => void;
+    edit: (value: boolean, permissionId: number) => void;
+    delete: (value: boolean, permissionId: number) => void;
+    singleRow: (value: boolean, permissionId: number) => void;
   };
   subActions: {
-    view: (value: boolean, permission: string, subId: number) => void;
-    add: (value: boolean, permission: string, subId: number) => void;
-    edit: (value: boolean, permission: string, subId: number) => void;
-    delete: (value: boolean, permission: string, subId: number) => void;
-    singleRow: (value: boolean, permission: string, subId: number) => void;
+    view: (value: boolean, permissionId: number, subId: number) => void;
+    add: (value: boolean, permissionId: number, subId: number) => void;
+    edit: (value: boolean, permissionId: number, subId: number) => void;
+    delete: (value: boolean, permissionId: number, subId: number) => void;
+    singleRow: (value: boolean, permissionId: number, subId: number) => void;
   };
 }
 const PermissionSub = (props: PermissionSubProps) => {
@@ -41,39 +41,47 @@ const PermissionSub = (props: PermissionSubProps) => {
       </CollapsibleTrigger>
       <CollapsibleContent className="space-y-4 px-3 lg:px-4 py-4 md:py-4 bg-primary/5 pb-4 mb-4 border hover:shadow transition-shadow ease-in-out rounded-xl shadow-sm">
         <div className="md:flex md:flex-wrap xl:grid md:space-y-2 xl:space-y-0 space-y-3 xl:grid-cols-6 mt-2 items-center border-b pb-3">
-          <div className="col-span-2 w-full xl:w-fit flex items-center gap-x-2">
+          <div className="col-span-2 w-full xl:w-fit flex items-center">
+            <CustomCheckbox
+              checked={
+                permission.view &&
+                permission.add &&
+                permission.delete &&
+                permission.edit
+              }
+              onCheckedChange={(value: boolean) =>
+                mainActions["singleRow"](value, permission.id)
+              }
+            />
             <h1 className="rtl:text-2xl-rtl ltr:text-xl-ltr text-start font-bold text-tertiary">
               {t(permission.permission)}
             </h1>
-            <CustomCheckbox
-              checked={permission.add}
-              onCheckedChange={(value: boolean) =>
-                mainActions["singleRow"](value, permission.permission)
-              }
-            />
           </div>
           <CustomCheckbox
             text={t("add")}
+            readOnly={!permission.view}
             className="ml-1"
             checked={permission.add}
             onCheckedChange={(value: boolean) =>
-              mainActions["add"](value, permission.permission)
+              mainActions["add"](value, permission.id)
             }
           />
           <CustomCheckbox
+            readOnly={!permission.view}
             text={t("edit")}
             className="ml-1"
             checked={permission.edit}
             onCheckedChange={(value: boolean) =>
-              mainActions["edit"](value, permission.permission)
+              mainActions["edit"](value, permission.id)
             }
           />
           <CustomCheckbox
             text={t("delete")}
+            readOnly={!permission.view}
             className="ml-1"
             checked={permission.delete}
             onCheckedChange={(value: boolean) =>
-              mainActions["delete"](value, permission.permission)
+              mainActions["delete"](value, permission.id)
             }
           />
           <CustomCheckbox
@@ -81,7 +89,7 @@ const PermissionSub = (props: PermissionSubProps) => {
             className="ml-1"
             checked={permission.view}
             onCheckedChange={(value: boolean) =>
-              mainActions["view"](value, permission.permission)
+              mainActions["view"](value, permission.id)
             }
           />
         </div>
@@ -92,55 +100,53 @@ const PermissionSub = (props: PermissionSubProps) => {
               !permission.view && "pointer-events-none opacity-60"
             }`}
           >
-            <div className="col-span-2 w-full xl:w-fit flex items-center gap-x-2">
-              <h1 className="rtl:text-2xl-rtl ltr:text-xl-ltr text-start font-bold text-tertiary">
-                {t(subPermission.name)}
-              </h1>
+            <div className="col-span-2 w-full xl:w-fit flex items-center">
               <CustomCheckbox
-                checked={subPermission.add}
+                checked={
+                  subPermission.view &&
+                  subPermission.add &&
+                  subPermission.delete &&
+                  subPermission.edit
+                    ? true
+                    : false
+                }
                 onCheckedChange={(value: boolean) =>
                   subActions["singleRow"](
                     value,
-                    permission.permission,
+                    permission.id,
                     subPermission.id
                   )
                 }
               />
+              <h1 className="rtl:text-2xl-rtl ltr:text-xl-ltr text-start rtl:font-bold text-tertiary">
+                {t(subPermission.name)}
+              </h1>
             </div>
             <CustomCheckbox
               text={t("add")}
               className="ml-1"
+              readOnly={!subPermission.view}
               checked={subPermission.add}
               onCheckedChange={(value: boolean) =>
-                subActions["add"](
-                  value,
-                  permission.permission,
-                  subPermission.id
-                )
+                subActions["add"](value, permission.id, subPermission.id)
               }
             />
             <CustomCheckbox
               text={t("edit")}
               className="ml-1"
+              readOnly={!subPermission.view}
               checked={subPermission.edit}
               onCheckedChange={(value: boolean) =>
-                subActions["edit"](
-                  value,
-                  permission.permission,
-                  subPermission.id
-                )
+                subActions["edit"](value, permission.id, subPermission.id)
               }
             />
             <CustomCheckbox
               text={t("delete")}
               className="ml-1"
+              readOnly={!subPermission.view}
               checked={subPermission.delete}
               onCheckedChange={(value: boolean) =>
-                subActions["delete"](
-                  value,
-                  permission.permission,
-                  subPermission.id
-                )
+                subActions["delete"](value, permission.id, subPermission.id)
               }
             />
             <CustomCheckbox
@@ -148,11 +154,7 @@ const PermissionSub = (props: PermissionSubProps) => {
               className="ml-1"
               checked={subPermission.view}
               onCheckedChange={(value: boolean) =>
-                subActions["view"](
-                  value,
-                  permission.permission,
-                  subPermission.id
-                )
+                subActions["view"](value, permission.id, subPermission.id)
               }
             />
           </div>

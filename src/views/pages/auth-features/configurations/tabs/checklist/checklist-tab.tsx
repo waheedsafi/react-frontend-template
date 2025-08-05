@@ -99,7 +99,7 @@ export default function ChecklistTab(props: ChecklistTabProps) {
   const remove = async (checklist: CheckList) => {
     try {
       // 1. Remove from backend
-      const response = await axiosClient.delete(`checklist/${checklist.id}`);
+      const response = await axiosClient.delete(`checklists/${checklist.id}`);
       if (response.status === 200) {
         // 2. Remove from frontend
         setChecklists((prevChecklists) => ({
@@ -154,7 +154,7 @@ export default function ChecklistTab(props: ChecklistTabProps) {
             isDismissable={false}
             button={
               <PrimaryButton className="text-primary-foreground">
-                {t("add")}
+                {t("add_checklist")}
               </PrimaryButton>
             }
             showDialog={async () => true}
@@ -189,22 +189,22 @@ export default function ChecklistTab(props: ChecklistTabProps) {
             <>
               <TableRow>
                 <TableCell>
-                  <Shimmer className="h-[24px] bg-primary/30 w-full rounded-sm" />
+                  <Shimmer className="h-[24px] w-full rounded-sm" />
                 </TableCell>
                 <TableCell>
-                  <Shimmer className="h-[24px] bg-primary/30 w-full rounded-sm" />
+                  <Shimmer className="h-[24px] w-full rounded-sm" />
                 </TableCell>
                 <TableCell>
-                  <Shimmer className="h-[24px] bg-primary/30 w-full rounded-sm" />
+                  <Shimmer className="h-[24px] w-full rounded-sm" />
                 </TableCell>
                 <TableCell>
-                  <Shimmer className="h-[24px] bg-primary/30 w-full rounded-sm" />
+                  <Shimmer className="h-[24px] w-full rounded-sm" />
                 </TableCell>
                 <TableCell>
-                  <Shimmer className="h-[24px] bg-primary/30 w-full rounded-sm" />
+                  <Shimmer className="h-[24px] w-full rounded-sm" />
                 </TableCell>
                 <TableCell>
-                  <Shimmer className="h-[24px] bg-primary/30 w-full rounded-sm" />
+                  <Shimmer className="h-[24px] w-full rounded-sm" />
                 </TableCell>
               </TableRow>
             </>
@@ -227,8 +227,9 @@ export default function ChecklistTab(props: ChecklistTabProps) {
               >
                 <TableCell className="font-medium">{index + 1}</TableCell>
                 <TableCell>{checklist.name}</TableCell>
-                <TableCell>
+                <TableCell className=" text-start">
                   <BooleanStatusButton
+                    className=" mx-0"
                     getColor={function (): {
                       style: string;
                       value?: string;

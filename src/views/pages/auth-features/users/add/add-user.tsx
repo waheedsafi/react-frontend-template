@@ -31,10 +31,7 @@ export default function AddUser(props: AddUserProps) {
         let formData = new FormData();
         formData.append("email", userData?.email);
         formData.append("contact", userData?.contact);
-        const response = await axiosClient.post(
-          "validate/email/contact",
-          formData
-        );
+        const response = await axiosClient.post("contacts/exist", formData);
         if (response.status == 200) {
           const emailExist = response.data.email_found === true;
           const contactExist = response.data.contact_found === true;
@@ -69,13 +66,11 @@ export default function AddUser(props: AddUserProps) {
     try {
       const response = await axiosClient.post("user/store", {
         permissions: userData?.permissions,
-        grant: userData.grant == true,
-        status: userData.status == true,
         role: userData.role.id,
         job: userData.job.name,
         job_id: userData.job.id,
-        destination: userData.destination.name,
-        destination_id: userData.destination.id,
+        division: userData.division.name,
+        division_id: userData.division.id,
         contact: userData.contact,
         password: userData.password,
         email: userData.email,
@@ -145,7 +140,7 @@ export default function AddUser(props: AddUserProps) {
               { name: "full_name", rules: ["required", "max:45", "min:3"] },
               { name: "username", rules: ["required", "max:45", "min:3"] },
               { name: "email", rules: ["required"] },
-              { name: "destination", rules: ["required"] },
+              { name: "division", rules: ["required"] },
               { name: "job", rules: ["required"] },
             ],
           },

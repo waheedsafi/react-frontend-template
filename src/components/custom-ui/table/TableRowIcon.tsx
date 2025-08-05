@@ -81,7 +81,7 @@ const TableRowIcon = React.forwardRef<HTMLTableRowElement, TableRowIconProps>(
         {loading && (
           <td className="w-full h-full bg-primary/20 absolute flex justify-center left-0">
             <NastranSpinner
-              showLabel={false}
+              show_label={false}
               labelclassname="ltr:text-sm-ltr rtl:text-xl-ltr text-primary-foreground"
               className="size-[18px]"
             />

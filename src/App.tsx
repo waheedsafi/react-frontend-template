@@ -1,5 +1,4 @@
-import { RoleEnum } from "@/database/model-enums";
-import { getGuestRouter, getSuperRouter } from "./routes/routes";
+import { getGuestRouter, getAuthRouter } from "./routes/routes";
 import { useGeneralAuthState } from "@/stores/auth/use-auth-store";
 
 export default function App() {
@@ -9,10 +8,9 @@ export default function App() {
 
   if (!authenticated) routes = getGuestRouter();
   else {
-    routes =
-      user.role.role == RoleEnum.super
-        ? getSuperRouter(user, authenticated)
-        : getGuestRouter();
+    routes = authenticated
+      ? getAuthRouter(user, authenticated)
+      : getGuestRouter();
   }
   return routes;
 }

@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import PasswordInput from "@/components/custom-ui/input/PasswordInput";
 import { generatePassword } from "@/lib/generators";
 import APICombobox from "@/components/custom-ui/combobox/APICombobox";
-import CustomCheckbox from "@/components/custom-ui/checkbox/CustomCheckbox";
 
 export default function AddUserAccount() {
   const { userData, setUserData, error } = useContext(StepperContext);
@@ -73,32 +72,9 @@ export default function AddUserAccount() {
         selectedItem={userData["role"]?.name}
         placeHolder={t("select_a_role")}
         errorMessage={error.get("role")}
-        apiUrl={"roles"}
-        translate={true}
+        apiUrl={"roles/by/user"}
         mode="single"
-      />
-
-      <CustomCheckbox
-        checked={userData["status"]}
-        onCheckedChange={(value: boolean) =>
-          setUserData({ ...userData, status: value })
-        }
-        parentClassName="rounded-md py-[12px] gap-x-1 bg-card border px-[10px]"
-        text={t("status")}
-        description={t("set_acco_act_or_dec")}
-        required={true}
-        requiredHint={`* ${t("required")}`}
-        errorMessage={error.get("status")}
-      />
-      <CustomCheckbox
-        checked={userData["grant"] || false}
-        onCheckedChange={(value: boolean) =>
-          setUserData({ ...userData, grant: value })
-        }
-        parentClassName="rounded-md py-[12px] gap-x-1 bg-card border px-[10px]"
-        text={t("grant")}
-        description={t("allows_user_grant")}
-        errorMessage={error.get("grant")}
+        cacheData={false}
       />
     </div>
   );

@@ -216,12 +216,12 @@ body *:after ::-webkit-scrollbar {
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--fourth);
+  background: var(--tertiary);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--fourth);
+  background: var(--tertiary);
 }
 
 body *:before,

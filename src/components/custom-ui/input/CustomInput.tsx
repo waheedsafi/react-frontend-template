@@ -81,7 +81,7 @@ const CustomInput = React.forwardRef<HTMLInputElement, InputProps>(
           {label && (
             <label
               htmlFor={label}
-              className="absolute font-semibold rtl:text-lg-rtl ltr:text-xl-ltr rtl:right-[4px] ltr:left-[4px] ltr:-top-[22px] rtl:-top-[24px]"
+              className="absolute font-semibold rtl:text-xl-rtl ltr:text-lg-ltr rtl:right-[4px] ltr:left-[4px] ltr:-top-[22px] rtl:-top-[24px]"
             >
               {label}
             </label>
@@ -112,12 +112,21 @@ const CustomInput = React.forwardRef<HTMLInputElement, InputProps>(
         {hasError && (
           <AnimatedItem
             springProps={{
-              from: { opacity: 0 },
-              to: { opacity: 1 },
-              config: { mass: 1, tension: 170, friction: 26 },
-              reset: true,
+              from: {
+                opacity: 0,
+                transform: "translateY(-8px)",
+              },
+              config: {
+                mass: 1,
+                tension: 210,
+                friction: 20,
+              },
+              to: {
+                opacity: 1,
+                transform: "translateY(0px)",
+              },
             }}
-            intersectionArgs={{ rootMargin: "-5% 0%" }}
+            intersectionArgs={{ once: true, rootMargin: "-5% 0%" }}
           >
             <h1 className="text-red-400 text-start capitalize rtl:text-sm rtl:font-medium ltr:text-sm-ltr">
               {errorMessage}
