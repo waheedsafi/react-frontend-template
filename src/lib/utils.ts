@@ -17,6 +17,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
 import persian from "react-date-object/calendars/persian";
 import { toast } from "sonner";
+import { RoleEnum } from "@/database/model-enums";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -227,5 +228,9 @@ export const languageRegexMap: Record<string, RegExp> = {
     /^[\u0600-\u06FF\u06F0-\u06F9\s،؟؛«».:!٪'"()\-_:;@#٪&*\/\\[\]{}<>+=|~`^$]+$/, // Includes Persian symbols & punctuation
   pashto:
     /^[\u0600-\u06FF\u06F0-\u06F9\s،؟؛«».:!٪'"()\-_:;@#٪&*\/\\[\]{}<>+=|~`^$]+$/, // Same as Farsi for coverage
+};
+export const isNotAllowed = (id?: string) => {
+  const parsedId = parseInt(id ?? "");
+  return parsedId === RoleEnum.super || parsedId === RoleEnum.debugger;
 };
 // application

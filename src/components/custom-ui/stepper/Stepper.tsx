@@ -55,7 +55,6 @@ const Stepper = React.forwardRef<HTMLDivElement, IStepperProps>(
       onSaveClose,
       className,
       size,
-      heightsize,
       backText,
       nextText,
       confirmText,
@@ -113,7 +112,10 @@ const Stepper = React.forwardRef<HTMLDivElement, IStepperProps>(
     };
 
     return (
-      <div ref={ref} className={cn("w-full rounded-2xl pb-2", className)}>
+      <div
+        ref={ref}
+        className={cn("w-full overflow-hidden rounded-2xl pb-2", className)}
+      >
         {/* Stepper */}
         <div className={`${!isCardActive && "mt-4"} w-full`}>
           <StepperSteps
@@ -124,25 +126,19 @@ const Stepper = React.forwardRef<HTMLDivElement, IStepperProps>(
           />
           {/* Display components */}
           <div
-            className={`w-full overflow-y-auto ${
+            className={`w-full h-fit overflow-y-auto py-8 ${
               isCardActive
                 ? "bg-card px-3 sm:px-7 rounded-md border border-primary/10 dark:border-primary/20"
                 : "mb-4 mt-12"
             } ${
-              size === "wrap-height"
-                ? " h-fit pt-6 pb-12"
-                : size === "sm"
-                ? "max-h-[40vh] min-h-[40vh]"
+              size === "sm"
+                ? "min-h-[40vh]"
                 : size === "md"
-                ? "max-h-[50vh] min-h-[60vh]"
+                ? "min-h-[60vh]"
                 : size === "lg"
-                ? "max-h-[65vh] min-h-[65vh]"
-                : "max-h-[60vh] min-h-[60vh]"
+                ? "min-h-[65vh]"
+                : "min-h-[60vh]"
             }`}
-            style={{
-              minHeight:
-                heightsize == "wrap-height" ? "fit-content" : undefined,
-            }}
           >
             <StepperContext.Provider
               value={{
@@ -165,6 +161,7 @@ const Stepper = React.forwardRef<HTMLDivElement, IStepperProps>(
           <StepperControl
             isCardActive={isCardActive}
             backText={backText}
+            inProgress={userData?.complete == false}
             nextText={nextText}
             confirmText={confirmText}
             handleClick={handleDirection}

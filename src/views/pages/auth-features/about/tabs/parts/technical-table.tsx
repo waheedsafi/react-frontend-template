@@ -98,7 +98,7 @@ export default function TechnicalTable(props: TechnicalTableProps) {
                 <CachedImage
                   src={isString(item.picture) ? item.picture : ""}
                   alt="Avatar"
-                  ShimmerIconClassName="size-[18px] min-w-[36px] min-h-[36px]"
+                  ShimmerIconClassName="size-[18px] min-w-[22px] min-h-[22px]"
                   shimmerClassName="size-[36px] min-w-[36px] min-h-[36px] mx-auto shadow-lg border border-tertiary rounded-full"
                   className="size-[36px] min-w-[36px] min-h-[36px] object-center object-cover mx-auto shadow-lg border border-tertiary rounded-full"
                   routeIdentifier={"public"}

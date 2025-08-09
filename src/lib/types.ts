@@ -61,7 +61,7 @@ export interface UserInformation {
     selected: boolean;
   };
   contact: string;
-  department: {
+  division: {
     id: string;
     name: string;
     selected: boolean;
@@ -84,4 +84,6 @@ export interface Option {
   /** Group the options by providing key. */
   [key: string]: string | boolean | undefined;
 }
+export type ActivitySearch = "user" | "type";
+
 // application

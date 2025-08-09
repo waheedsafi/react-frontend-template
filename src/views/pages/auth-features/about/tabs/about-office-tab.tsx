@@ -135,7 +135,7 @@ export default function AboutOfficeTab(props: AboutOfficeTabProps) {
   const hasAdd = permission.sub.get(PermissionEnum.about.sub.office)?.add;
 
   return (
-    <Card className="xxl:w-[90%] md:w-[70%] lg:w-1/2 mx-auto px-4 sm:px-8">
+    <Card className="xxl:w-[90%] md:w-[70%] lg:w-1/2 mx-auto">
       <CardHeader className="relative text-start">
         <CardTitle className="rtl:text-4xl-rtl ltr:text-4xl-ltr text-tertiary text-start">
           {t("office")}
@@ -144,7 +144,7 @@ export default function AboutOfficeTab(props: AboutOfficeTabProps) {
           {t("general_desc")}
         </CardDescription>
       </CardHeader>
-      <CardContent className="px-0 pt-0 flex flex-col gap-y-8">
+      <CardContent className="flex flex-col gap-y-8">
         {loading ? (
           <NastranSpinner />
         ) : (

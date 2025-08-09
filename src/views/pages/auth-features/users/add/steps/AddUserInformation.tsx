@@ -13,7 +13,7 @@ export default function AddUserInformation() {
     setUserData({ ...userData, [name]: value });
   };
   return (
-    <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-x-4 lg:gap-x-12 gap-y-8">
+    <div className="grid sm:grid-cols-2 w-full xl:grid-cols-3 gap-x-4 lg:gap-x-12 gap-y-8">
       <CustomInput
         required={true}
         label={t("full_name")}
@@ -86,7 +86,7 @@ export default function AddUserInformation() {
         required={true}
         requiredHint={`* ${t("required")}`}
         selectedItem={userData["division"]?.name}
-        placeHolder={t("select_destination")}
+        placeHolder={t("select_division")}
         errorMessage={error.get("division")}
         apiUrl={"divisions"}
         mode="single"

@@ -4,9 +4,6 @@ import Unauthorized from "@/views/error/unauthorized";
 import AuthLayout from "@/views/layouts/auth-layout";
 import GuestLayout from "@/views/layouts/guest-layout";
 import SiteLayout from "@/views/layouts/site-layout";
-import AboutPage from "@/views/pages/auth-features/about/about-page";
-import ConfigurationsPage from "@/views/pages/auth-features/configurations/configurations-page";
-import SettingsPage from "@/views/pages/auth-features/settings/settings-page";
 import UserEditPage from "@/views/pages/auth-features/users/edit/user-edit-page";
 import UserPage from "@/views/pages/auth-features/users/user-page";
 import LoginPage from "@/views/pages/guest-features/login/user/login-page";
@@ -18,6 +15,20 @@ import HomePage from "@/views/pages/main-site/home/home-page";
 import MainPage from "@/views/pages/main-site/main/main-page";
 import SuperDashboardPage from "@/views/pages/auth-features/dashboard/super/super-dashboard-page";
 import { BrowserRouter, Route, Routes } from "react-router";
+import { lazy } from "react";
+import ActivityPage from "@/views/pages/auth-features/activity/activity-page";
+const UsersProfilePage = lazy(
+  () => import("@/views/pages/auth-features/profile/users/users-profile-page")
+);
+const AboutPage = lazy(
+  () => import("@/views/pages/auth-features/about/about-page")
+);
+const ConfigurationsPage = lazy(
+  () => import("@/views/pages/auth-features/configurations/configurations-page")
+);
+const SettingsPage = lazy(
+  () => import("@/views/pages/auth-features/settings/settings-page")
+);
 
 export const getAuthRouter = (user: User, authenticated: boolean) => {
   const permissions: Map<string, UserPermission> = user.permissions;
@@ -72,7 +83,19 @@ export const getAuthRouter = (user: User, authenticated: boolean) => {
               />
             }
           />
+          <Route
+            path="activity/:id"
+            element={
+              <ProtectedRoute
+                element={<ActivityPage />}
+                routeName="activity"
+                permissions={permissions}
+                authenticated={authenticated}
+              />
+            }
+          />
           <Route path="settings" element={<SettingsPage />} />
+          <Route path="profile" element={<UsersProfilePage />} />
         </Route>
         {/* Site Routes */}
         <Route path="/" element={<SiteLayout />}>

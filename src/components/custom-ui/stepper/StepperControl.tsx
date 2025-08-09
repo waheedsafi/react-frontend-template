@@ -6,6 +6,7 @@ import PrimaryButton from "../button/PrimaryButton";
 export interface IStepperControlProps {
   backText: string;
   nextText: string;
+  inProgress: boolean;
   confirmText: string;
   steps: {
     description: string;
@@ -26,6 +27,7 @@ function StepperControl(props: IStepperControlProps) {
     nextText,
     confirmText,
     isCardActive,
+    inProgress,
     onSaveClose,
     onSaveCloseText,
   } = props;
@@ -46,7 +48,9 @@ function StepperControl(props: IStepperControlProps) {
       } flex flex-wrap gap-x-1 gap-y-4 justify-around mb-4 text-[13px]`}
     >
       {/* Back Button */}
+
       <button
+        disabled={loading}
         onClick={() => {
           if (currentStep != 1) handleClick("back");
         }}
@@ -60,25 +64,28 @@ function StepperControl(props: IStepperControlProps) {
         {backText}
       </button>
       {/* Next Button */}
-      <button
+      <PrimaryButton
         onClick={() => handleClick("next")}
-        className="bg-green-500 flex gap-x-2 items-center hover:shadow transition rtl:text-sm-rtl ltr:text-[14px] font-semibold w-fit text-primary-foreground/80 shadow-md rounded-md shadow-primary/50 dark:shadow-green-400/50 px-3 py-[6px] hover:bg-green-500 hover:text-primary-foreground"
+        disabled={loading || inProgress}
+        className={`shadow-lg bg-green-500 hover:bg-green-500`}
       >
-        {currentStep == steps.length - 1 ? (
-          <>
-            {confirmText}
-            <Check className="size-[18px] inline rtl:rotate-180" />
-          </>
-        ) : (
-          <>
-            {nextText}
-            <ChevronRight className="size-[18px] inline rtl:rotate-180" />
-          </>
-        )}
-      </button>
+        <ButtonSpinner loading={loading || inProgress}>
+          {currentStep == steps.length - 1 ? (
+            <>
+              {confirmText}
+              <Check className="size-[18px] inline rtl:rotate-180" />
+            </>
+          ) : (
+            <>
+              {nextText}
+              <ChevronRight className="size-[18px] inline rtl:rotate-180" />
+            </>
+          )}
+        </ButtonSpinner>
+      </PrimaryButton>
       {onSaveCloseText && (
         <PrimaryButton
-          disabled={loading}
+          disabled={loading || inProgress}
           onClick={onClose}
           className={`shadow-lg`}
         >

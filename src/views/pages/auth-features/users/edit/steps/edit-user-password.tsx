@@ -72,22 +72,14 @@ export function EditUserPassword(props: EditUserPasswordProps) {
         setLoading(false);
         return;
       }
-      const formData = new FormData();
-      formData.append("id", id);
-      formData.append("new_password", passwordData.new_password);
-      if (user.role.role != RoleEnum.super)
-        formData.append("old_password", passwordData.old_password);
-      formData.append("confirm_password", passwordData.confirm_password);
       try {
-        const response = await axiosClient.post(
-          "user/accpunt/change-password",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        const response = await axiosClient.post("users/change-password", {
+          id: id,
+          new_password: passwordData.new_password,
+          confirm_password: passwordData.confirm_password,
+          old_password:
+            user.role.role != RoleEnum.super && passwordData.old_password,
+        });
         if (response.status == 200) {
           toast.success(t(response.data.message));
           // If user changed his password he must login again
@@ -107,10 +99,10 @@ export function EditUserPassword(props: EditUserPasswordProps) {
     PermissionEnum.users.sub.user_information
   )?.edit;
   return (
-    <Card>
+    <Card className="shadow-none">
       <CardHeader className="space-y-0">
         <CardTitle className="rtl:text-3xl-rtl ltr:text-2xl-ltr">
-          {t("update_account_password")}
+          {t("account_password")}
         </CardTitle>
         <CardDescription className="rtl:text-xl-rtl ltr:text-lg-ltr">
           {t("update_pass_descrip")}

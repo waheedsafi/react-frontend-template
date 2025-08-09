@@ -12,7 +12,7 @@ const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
         ref={ref}
         {...rest}
         className={cn(
-          "rounded-sm px-5 h-fit items-center shadow shadow-primary/15 bg-card w-fit flex gap-x-4",
+          "rounded-sm px-5 h-fit items-center border bg-card w-full md:w-fit overflow-x-auto flex gap-x-4",
           className
         )}
       >
@@ -39,7 +39,7 @@ const BreadcrumbSeparator = React.forwardRef<
       preserveAspectRatio="none"
       aria-hidden="true"
       className={cn(
-        "text-primary/15 h-[40px] w-[20px] rtl:rotate-180",
+        "text-primary/15 min-h-[40px] min-w-[20px] h-[40px] w-[20px] rtl:rotate-180",
         className
       )}
     >
@@ -84,7 +84,7 @@ const BreadcrumbHome = React.forwardRef<SVGSVGElement, BreadcrumbHomeProps>(
         // aria-hidden="true"
         // data-slot="icon"
         className={cn(
-          "text-primary/60 fill-primary/60 hover:scale-105 size-[18px] hover:fill-primary/90 transition-[fill] duration-300 cursor-pointer",
+          "text-primary/60 fill-primary/60 hover:scale-105 min-w-[18px] min-h-[18px] size-[18px] hover:fill-primary/90 transition-[fill] duration-300 cursor-pointer",
           className
         )}
       >

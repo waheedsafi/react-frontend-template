@@ -27,6 +27,8 @@ export type User = {
   full_name: string;
   username: string;
   email: string;
+  status?: string;
+  status_id?: number;
   profile: any;
   role: Role;
   contact: string;
@@ -92,4 +94,24 @@ export interface Slideshow {
   saved_by?: string;
 }
 
+export type BasicStatus = {
+  id: number;
+  name: string;
+  is_active: number;
+  saved_by: string;
+  comment: string;
+  status_id: number;
+  created_at: string;
+};
+export interface ActivityModel {
+  id: string;
+  profile: string;
+  username: string;
+  userable_type: string;
+  action: string;
+  ip_address: string;
+  platform: string;
+  browser: string;
+  date: string;
+}
 // Application

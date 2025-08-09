@@ -268,7 +268,7 @@ export function UserTable() {
           placeholder={`${t(filters.search.column)}...`}
           parentClassName="sm:-order-3 col-span-full sm:col-span-1"
           type="text"
-          className="rounded-md md:w-[80%] lg:w-1/2"
+          className="md:w-[80%] lg:w-1/2"
           startContent={
             <Search className="size-[18px] mx-auto rtl:mr-[4px] text-primary pointer-events-none" />
           }

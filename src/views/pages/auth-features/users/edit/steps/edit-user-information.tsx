@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import NastranSpinner from "@/components/custom-ui/spinner/NastranSpinner";
 import axiosClient from "@/lib/axois-client";
 import { setServerError, validate } from "@/validation/validation";
-import { toLocaleDate } from "@/lib/utils";
+import { isNotAllowed, toLocaleDate } from "@/lib/utils";
 import ButtonSpinner from "@/components/custom-ui/spinner/ButtonSpinner";
 import { useGlobalState } from "@/context/GlobalStateContext";
 import FakeCombobox from "@/components/custom-ui/combobox/FakeCombobox";
@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import type { UserPermission } from "@/database/models";
 import type { UserInformation } from "@/lib/types";
 import { PermissionEnum } from "@/database/model-enums";
+import { useScrollToElement } from "@/hook/use-scroll-to-element";
 export interface EditUserInformationProps {
   id: string | undefined;
   failed: boolean;
@@ -40,6 +41,7 @@ export default function EditUserInformation(props: EditUserInformationProps) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Map<string, string>>(new Map());
+  useScrollToElement(error);
   useEffect(() => {
     setTempUserData(userData);
   }, [userData]);
@@ -71,7 +73,7 @@ export default function EditUserInformation(props: EditUserInformationProps) {
           rules: ["required", "max:45", "min:3"],
         },
         {
-          name: "destination",
+          name: "division",
           rules: ["required"],
         },
         {
@@ -82,14 +84,6 @@ export default function EditUserInformation(props: EditUserInformationProps) {
           name: "role",
           rules: ["required"],
         },
-        {
-          name: "status",
-          rules: ["required"],
-        },
-        {
-          name: "grant",
-          rules: ["required"],
-        },
       ],
       tempUserData,
       setError
@@ -98,21 +92,17 @@ export default function EditUserInformation(props: EditUserInformationProps) {
       setLoading(false);
       return;
     }
-    // 2. Store
-    const formData = new FormData();
-    formData.append("id", id);
-    formData.append("full_name", tempUserData.full_name);
-    formData.append("username", tempUserData.username);
-    formData.append("contact", tempUserData.contact);
-    formData.append("email", tempUserData.email);
-    formData.append("destination", tempUserData.department.id);
-    formData.append("job", tempUserData.job.id);
-    formData.append("role", tempUserData.role.id);
     try {
-      const response = await axiosClient.post(
-        "user/update/information",
-        formData
-      );
+      const response = await axiosClient.put("users", {
+        id: id,
+        full_name: tempUserData.full_name,
+        username: tempUserData.username,
+        contact: tempUserData.contact,
+        email: tempUserData.email,
+        division: tempUserData.division.id,
+        job: tempUserData.job.id,
+        role: tempUserData.role.id,
+      });
       if (response.status == 200) {
         // Update user state
         setUserData(tempUserData);
@@ -132,7 +122,7 @@ export default function EditUserInformation(props: EditUserInformationProps) {
     PermissionEnum.users.sub.user_information
   )?.edit;
   return (
-    <Card>
+    <Card className="shadow-none">
       <CardHeader className="space-y-0">
         <CardTitle className="rtl:text-3xl-rtl ltr:text-2xl-ltr">
           {t("account_information")}
@@ -141,7 +131,7 @@ export default function EditUserInformation(props: EditUserInformationProps) {
           {t("update_user_acc_info")}
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-x-4 gap-y-6 w-full lg:w-1/2 2xl:h-1/3">
+      <CardContent className="flex flex-col gap-x-4 gap-y-6 md:w-[80%] lg:w-1/2 2xl:h-1/3">
         {failed ? (
           <h1 className="rtl:text-2xl-rtl">{t("u_are_not_authzed!")}</h1>
         ) : tempUserData === undefined ? (
@@ -213,15 +203,15 @@ export default function EditUserInformation(props: EditUserInformationProps) {
               placeholderText={t("search_item")}
               errorText={t("no_item")}
               onSelect={(selection: any) =>
-                setTempUserData({ ...tempUserData, ["department"]: selection })
+                setTempUserData({ ...tempUserData, ["division"]: selection })
               }
-              lable={t("destination")}
+              lable={t("division")}
               required={true}
               requiredHint={`* ${t("required")}`}
-              selectedItem={tempUserData?.department?.name}
-              placeHolder={t("select_destination")}
-              errorMessage={error.get("destination")}
-              apiUrl={"destinations"}
+              selectedItem={tempUserData?.division?.name}
+              placeHolder={t("select")}
+              errorMessage={error.get("division")}
+              apiUrl={"divisions"}
               mode="single"
             />
 
@@ -242,6 +232,7 @@ export default function EditUserInformation(props: EditUserInformationProps) {
             />
 
             <APICombobox
+              readonly={isNotAllowed(id)}
               placeholderText={t("search_item")}
               errorText={t("no_item")}
               onSelect={(selection: any) =>
@@ -255,7 +246,6 @@ export default function EditUserInformation(props: EditUserInformationProps) {
               errorMessage={error.get("role")}
               apiUrl={"roles"}
               mode="single"
-              translate={true}
             />
             <FakeCombobox
               icon={

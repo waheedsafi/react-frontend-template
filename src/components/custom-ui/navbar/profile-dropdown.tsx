@@ -50,7 +50,7 @@ function ProfileDropdown(props: ProfileDropdownProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer rtl:text-md-rtl ltr:text-xs rtl:font-semibold"
-          onClick={async () => navigate("/profile")}
+          onClick={async () => navigate("/dashboard/profile")}
         >
           {t("profile")}
           <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>

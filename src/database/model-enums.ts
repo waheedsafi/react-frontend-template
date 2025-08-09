@@ -40,7 +40,7 @@ export const PermissionEnum = {
     sub: {
       user_information: 1,
       user_password: 2,
-      user_permission: 3,
+      account_status: 3,
     },
   },
   audit: { id: 5, name: "audit", sub: {} },
@@ -67,7 +67,6 @@ export const PermissionEnum = {
     name: "activity",
     sub: {
       user_activity: 71,
-      password_activity: 72,
     },
   },
 };

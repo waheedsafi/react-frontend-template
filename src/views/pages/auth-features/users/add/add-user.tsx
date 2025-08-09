@@ -1,12 +1,11 @@
 import AddUserAccount from "./steps/AddUserAccount";
 import AddUserInformation from "./steps/AddUserInformation";
-import AddUserPermission from "./steps/AddUserPermission";
 import { useTranslation } from "react-i18next";
 import { useModelOnRequestHide } from "@/components/custom-ui/model/hook/useModelOnRequestHide";
 import CloseButton from "@/components/custom-ui/button/CloseButton";
 import axiosClient from "@/lib/axois-client";
 import { setServerError } from "@/validation/validation";
-import { Check, Database, ShieldBan, User as UserIcon } from "lucide-react";
+import { Check, Database, User as UserIcon } from "lucide-react";
 import { checkStrength, passwordStrengthScore } from "@/lib/utils";
 import CompleteStep from "@/components/custom-ui/stepper/CompleteStep";
 import Stepper from "@/components/custom-ui/stepper/Stepper";
@@ -64,7 +63,7 @@ export default function AddUser(props: AddUserProps) {
     setError: Dispatch<SetStateAction<Map<string, string>>>
   ) => {
     try {
-      const response = await axiosClient.post("user/store", {
+      const response = await axiosClient.post("users", {
         permissions: userData?.permissions,
         role: userData.role.id,
         job: userData.job.name,
@@ -103,7 +102,7 @@ export default function AddUser(props: AddUserProps) {
       {/* Body */}
       <Stepper
         isCardActive={true}
-        size="wrap-height"
+        size="lg"
         className="bg-transparent dark:!bg-transparent"
         progressText={{
           complete: t("complete"),
@@ -123,10 +122,6 @@ export default function AddUser(props: AddUserProps) {
           {
             description: t("account_information"),
             icon: <Database className="size-[16px]" />,
-          },
-          {
-            description: t("permissions"),
-            icon: <ShieldBan className="size-[16px]" />,
           },
           {
             description: t("complete"),
@@ -160,10 +155,6 @@ export default function AddUser(props: AddUserProps) {
               },
               { name: "role", rules: ["required"] },
             ],
-          },
-          {
-            component: <AddUserPermission />,
-            validationRules: [],
           },
           {
             component: (

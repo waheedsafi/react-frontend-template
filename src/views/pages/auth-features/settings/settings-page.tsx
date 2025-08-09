@@ -11,13 +11,13 @@ export default function SettingsPage() {
   const { t } = useTranslation();
 
   return (
-    <>
-      <Breadcrumb className="mx-2 mt-2">
+    <div className="p-2">
+      <Breadcrumb>
         <BreadcrumbHome />
         <BreadcrumbSeparator />
         <BreadcrumbItem>{t("settings")}</BreadcrumbItem>
       </Breadcrumb>
       <LanguageTab />
-    </>
+    </div>
   );
 }

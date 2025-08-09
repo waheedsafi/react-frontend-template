@@ -23,36 +23,34 @@ export default function UserLoginPage() {
   const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (loading) return;
-    try {
-      // 1. Validate before submission
-      const result: boolean = await validate(
-        [
-          { name: "email", rules: ["required"] },
-          { name: "password", rules: ["required", "max:45", "min:8"] },
-        ],
-        userData,
-        setError
-      );
-      if (!result) {
-        setLoading(false);
-        return;
-      }
-
-      setLoading(true);
-      // 2. Attempt login
-      const response: any = await loginUser(
-        userData.email,
-        userData.password,
-        true
-      );
-      if (response.status == 200) {
-        toast.success(response.data.message);
-        navigate("/dashboard", { replace: true });
-      }
-    } catch (error: any) {
-      toast.error(error.response?.data?.message);
-      console.log(error, "Error");
+    // 1. Validate before submission
+    const result: boolean = await validate(
+      [
+        { name: "email", rules: ["required"] },
+        { name: "password", rules: ["required", "max:45", "min:8"] },
+      ],
+      userData,
+      setError
+    );
+    if (!result) {
+      setLoading(false);
+      return;
     }
+
+    setLoading(true);
+    // 2. Attempt login
+    const response: any = await loginUser(
+      userData.email,
+      userData.password,
+      true
+    );
+    if (response.status == 200) {
+      toast.success(response.data.message);
+      navigate("/dashboard", { replace: true });
+    } else {
+      toast.error(response?.response?.data?.message);
+    }
+
     setLoading(false);
   };
   const handleChange = (e: any) => {
