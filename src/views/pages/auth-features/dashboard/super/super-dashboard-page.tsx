@@ -1,12 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { BarChart2, PersonStanding } from "lucide-react";
-import BarChartNine from "@/components/custom-ui/charts/bar/BarChartNine";
-import PieChartSix from "@/components/custom-ui/charts/pie/PieChartSix";
-import LineChartThree from "@/components/custom-ui/charts/line/LineChartThree";
-import LineChartFive from "@/components/custom-ui/charts/line/LineChartFive";
-import RadialChartFive from "@/components/custom-ui/charts/radial/RadialChartFive";
-import { AreaChartSix } from "@/components/custom-ui/charts/area/AreaChartSix";
 import DashboardCard from "@/components/custom-ui/resuseable/dashboard-card";
+import { ChartRadialShape } from "@/components/custom-ui/charts/radial/chart-radial-shape";
+import ChartPieLabelList from "@/components/custom-ui/charts/pie/chart-pie-label-list";
+import ChartBarInteractive from "@/components/custom-ui/charts/bar/chart-bar-interactive";
 
 export default function SuperDashboardPage() {
   const { t } = useTranslation();
@@ -22,7 +19,7 @@ export default function SuperDashboardPage() {
   return (
     <>
       {/* Cards */}
-      <div className="px-1 sm:px-2 pt-4 grid grid-cols-2 md:grid-cols-4">
+      <div className="p-2 md:px-20 grid grid-cols-1 xxl:grid-cols-2 gap-2 md:grid-cols-4">
         {/* {loading ? (
           <>
             {cardLoader}
@@ -85,18 +82,10 @@ export default function SuperDashboardPage() {
         {/* )} */}
       </div>
       {/* Charts */}
-      <div className="grid grid-cols-1 md:grid-cols-2">
-        {/* Area Charts  */}
-        <AreaChartSix />
-        {/**Bar Charts */}
-        <BarChartNine />
-        {/**Pie Charts */}
-        <PieChartSix />
-        {/** Line Charts */}
-        <LineChartThree />
-        <LineChartFive />
-        {/**Radial Charts */}
-        <RadialChartFive />
+      <div className="flex flex-col sm:grid md:grid-cols-2 p-2 pb-16 gap-2">
+        <ChartBarInteractive />
+        <ChartRadialShape />
+        <ChartPieLabelList />
       </div>
     </>
   );

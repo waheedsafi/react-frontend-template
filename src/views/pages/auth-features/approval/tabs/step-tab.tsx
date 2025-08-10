@@ -181,7 +181,7 @@ export default function StepTab(props: ApprovedStepTabProps) {
   }, [debouncedValue]);
   const viewApprovalDialog = viewDetails.view && (
     <NastranModel
-      size="lg"
+      size="md"
       visible={true}
       isDismissable={false}
       button={undefined}
@@ -229,7 +229,7 @@ export default function StepTab(props: ApprovedStepTabProps) {
         />
         <div className="flex items-center gap-x-4">
           <NastranModel
-            size="lg"
+            size="md"
             isDismissable={false}
             button={
               <SecondaryButton
