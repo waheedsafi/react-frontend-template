@@ -3,6 +3,7 @@ import CloseButton from "@/components/custom-ui/button/CloseButton";
 import IconButton from "@/components/custom-ui/button/icon-button";
 import FakeCombobox from "@/components/custom-ui/combobox/FakeCombobox";
 import NastranSpinner from "@/components/custom-ui/spinner/NastranSpinner";
+import CustomTextarea from "@/components/custom-ui/textarea/CustomTextarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGlobalState } from "@/context/GlobalStateContext";
 import { NotifierEnum } from "@/database/model-enums";
@@ -46,7 +47,7 @@ export default function ViewApprovalDailog(props: ViewApprovalDailogprops) {
     try {
       if (loading) return;
       setLoading(true);
-      const response = await axiosClient.post("approval/submit", {
+      const response = await axiosClient.post("approvals", {
         approved: approved,
         approval_id: approval_id,
         respond_comment: approval?.respond_comment,
@@ -154,6 +155,20 @@ export default function ViewApprovalDailog(props: ViewApprovalDailogprops) {
                 />
               </>
             )}
+            <CustomTextarea
+              label={t("responder_comment")}
+              rows={4}
+              disabled={approval?.respond_comment ? true : false}
+              maxLength={300}
+              placeholder={`${t("detail")}...`}
+              defaultValue={approval?.respond_comment}
+              onChange={(e: any) => {
+                const { value } = e.target;
+                const newApproval = approval;
+                if (newApproval) newApproval.respond_comment = value;
+                setApproval(newApproval);
+              }}
+            />
           </CardContent>
         </>
       )}

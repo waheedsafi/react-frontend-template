@@ -1,6 +1,8 @@
 export const StatusEnum = {
   active: 1,
   block: 2,
+  pending: 3,
+  rejected: 4,
 };
 
 export const ChecklistEnum = {
@@ -42,6 +44,7 @@ export const PermissionEnum = {
       configurations_division: 33,
       configurations_role: 34,
       configurations_application: 35,
+      configurations_faqs: 35,
     },
   },
   users: {

@@ -1,4 +1,6 @@
+import BooleanStatusButton from "@/components/custom-ui/button/BooleanStatusButton";
 import CachedImage from "@/components/custom-ui/image/CachedImage";
+import { StatusEnum } from "@/database/model-enums";
 import type { UserInformation } from "@/lib/types";
 
 export interface UserEditHeaderProps {
@@ -27,6 +29,22 @@ export default function UserEditHeader(props: UserEditHeaderProps) {
       <h1 dir="ltr" className="text-primary rtl:text-md-rtl ltr:text-xl-ltr">
         {userData?.contact}
       </h1>
+      <BooleanStatusButton
+        getColor={function (): {
+          style: string;
+          value?: string;
+        } {
+          return StatusEnum.active === userData?.status_id
+            ? {
+                style: "border-green-500/90",
+                value: userData.status,
+              }
+            : {
+                style: "border-red-500",
+                value: userData?.status,
+              };
+        }}
+      />
     </div>
   );
 }

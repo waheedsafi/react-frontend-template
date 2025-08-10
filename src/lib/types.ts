@@ -56,6 +56,8 @@ export interface UserInformation {
   full_name: string;
   username: string;
   password: string;
+  status_id?: number;
+  status?: string;
   email: string;
   job: {
     id: string;
