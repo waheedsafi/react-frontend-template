@@ -5,6 +5,13 @@ export type Configuration = {
   type?: string;
   language?: string;
 };
+export interface FileType {
+  id: string;
+  path: string;
+  name: string;
+  extension: string;
+  size: number;
+}
 export type Order = "desc" | "asc";
 export interface PaginationData<T> {
   data: T[];
@@ -71,7 +78,7 @@ export interface UserInformation {
   created_at: string;
 }
 export interface UserPassword {
-  old_password: string;
+  old_password?: string;
   new_password: string;
   confirm_password: string;
 }
@@ -85,5 +92,6 @@ export interface Option {
   [key: string]: string | boolean | undefined;
 }
 export type ActivitySearch = "user" | "type";
+export type ApprovalSearch = "requester" | "id";
 
 // application

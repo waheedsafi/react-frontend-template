@@ -1,7 +1,7 @@
 import AchievementCounter from "@/components/custom-ui/resuseable/achievement-counter";
 import Shimmer from "@/components/custom-ui/shimmer/shimmer";
 import AnimatedItem from "@/hook/animated-item";
-import { BookOpen, TrainFront, TrendingUp, Users } from "lucide-react";
+import { House, HousePlus, TrainFront, TrendingUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export interface AchievementStatisticsProps {
@@ -49,12 +49,10 @@ export default function AchievementStatistics(
               <AchievementCounter
                 total={inView ? data.published : null}
                 loading={data == undefined}
-                title={t("published_books")}
+                title={t("ngos")}
                 symbol="+"
-                description={t("published_books_des")}
-                icon={
-                  <BookOpen className=" size-12 rounded-sm p-1 text-fourth" />
-                }
+                description={t("ngos_des")}
+                icon={<House className=" size-12 rounded-sm p-1 text-fourth" />}
               />
             )}
           </AnimatedItem>
@@ -80,10 +78,12 @@ export default function AchievementStatistics(
               <AchievementCounter
                 total={inView ? data.readers : null}
                 loading={data == undefined}
-                title={t("global_readers")}
+                title={t("foundations")}
                 symbol="+"
-                description={t("global_readers_des")}
-                icon={<Users className=" size-12 rounded-sm p-1 text-fourth" />}
+                description={t("foundations_des")}
+                icon={
+                  <HousePlus className=" size-12 rounded-sm p-1 text-fourth" />
+                }
               />
             )}
           </AnimatedItem>
@@ -109,11 +109,11 @@ export default function AchievementStatistics(
               <AchievementCounter
                 total={inView ? data.experience : null}
                 loading={data == undefined}
-                title={t("years_experience")}
+                title={t("donors")}
                 symbol="+"
-                description={t("years_experience_des")}
+                description={t("donors_des")}
                 icon={
-                  <TrendingUp className=" size-12 rounded-sm p-1 text-fourth" />
+                  <TrainFront className=" size-12 rounded-sm p-1 text-fourth" />
                 }
               />
             )}
@@ -140,11 +140,11 @@ export default function AchievementStatistics(
               <AchievementCounter
                 total={inView ? data.authors : null}
                 loading={data == undefined}
-                title={t("expert_authors")}
+                title={t("projects")}
                 symbol="+"
-                description={t("expert_authors_des")}
+                description={t("projects_des")}
                 icon={
-                  <TrainFront className=" size-12 rounded-sm p-1 text-fourth" />
+                  <TrendingUp className=" size-12 rounded-sm p-1 text-fourth" />
                 }
               />
             )}

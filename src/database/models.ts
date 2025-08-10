@@ -1,3 +1,5 @@
+import type { FileType } from "@/lib/types";
+
 export type Role = { role: 1; name: "super" } | { role: 2; name: "debugger" };
 
 export interface SubPermission {
@@ -113,5 +115,53 @@ export interface ActivityModel {
   platform: string;
   browser: string;
   date: string;
+}
+export interface Approval {
+  id: string;
+  request_comment: string;
+  request_date: string;
+  respond_comment: string;
+  respond_date: string;
+  approval_type_id: string;
+  approval_type: string;
+  requester_id: string;
+  requester: string;
+  responder_id: string;
+  responder_name: string;
+  notifier_type_id: number;
+  notifier_type: string;
+  document_count: string;
+}
+export interface ApprovalDocument extends FileType {
+  document_id: string;
+  checklist_id: string;
+  checklist_name: string;
+  acceptable_extensions: string;
+  acceptable_mimes: string;
+  description: string;
+}
+export interface IApproval {
+  id: string;
+  requester_id: string;
+  requester_name: string;
+  request_date: string;
+  start_date: string;
+  end_date: string;
+  request_comment: string;
+  responder_id?: string;
+  responder?: string;
+  respond_date?: string;
+  respond_comment?: string;
+  notifier_type_id: number;
+  notifier_type: string;
+  approval_documents: ApprovalDocument[];
+  completed: boolean;
+}
+export interface Applications {
+  id: string;
+  cast_to: string;
+  value: string;
+  description: string;
+  name: string;
 }
 // Application

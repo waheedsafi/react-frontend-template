@@ -15,7 +15,7 @@ export default function BooleanStatusButton(props: BooleanStatusButtonProps) {
   return (
     <div
       className={cn(
-        `border-[1px] mx-auto min-w-fit rtl:text-xl-rtl rtl:font-medium w-fit flex items-center gap-x-2 ltr:py-1 rtl:py-[2px] px-[8px] rounded-full ${data.style}`,
+        `border-[1px] mx-auto min-w-fit rtl:text-xl-rtl ltr:text-sm-rtl rtl:font-medium w-fit flex items-center gap-x-2 ltr:py-1 rtl:py-[2px] px-[8px] rounded-full ${data.style}`,
         className
       )}
     >

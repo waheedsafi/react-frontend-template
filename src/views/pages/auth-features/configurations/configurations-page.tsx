@@ -14,6 +14,7 @@ import {
 import { useLocation } from "react-router";
 import DivisionTab from "@/views/pages/auth-features/configurations/tabs/division/division-tab";
 import RolesTab from "@/views/pages/auth-features/configurations/tabs/roles/roles-tab";
+import ApplicationTab from "@/views/pages/auth-features/configurations/tabs/application/application-tab";
 
 export default function ConfigurationsPage() {
   const { user } = useUserAuthState();
@@ -61,6 +62,12 @@ export default function ConfigurationsPage() {
           className="w-full px-4 pt-8"
         >
           <RolesTab permissions={per} />
+        </TabsContent>
+        <TabsContent
+          value={PermissionEnum.configurations.sub.configurations_application.toString()}
+          className="w-full px-4 pt-8"
+        >
+          <ApplicationTab permissions={per} />
         </TabsContent>
       </Tabs>
     </>

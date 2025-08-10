@@ -17,6 +17,7 @@ import SuperDashboardPage from "@/views/pages/auth-features/dashboard/super/supe
 import { BrowserRouter, Route, Routes } from "react-router";
 import { lazy } from "react";
 import ActivityPage from "@/views/pages/auth-features/activity/activity-page";
+import ApprovalPage from "@/views/pages/auth-features/approval/approval-page";
 const UsersProfilePage = lazy(
   () => import("@/views/pages/auth-features/profile/users/users-profile-page")
 );
@@ -89,6 +90,17 @@ export const getAuthRouter = (user: User, authenticated: boolean) => {
               <ProtectedRoute
                 element={<ActivityPage />}
                 routeName="activity"
+                permissions={permissions}
+                authenticated={authenticated}
+              />
+            }
+          />
+          <Route
+            path="approval"
+            element={
+              <ProtectedRoute
+                element={<ApprovalPage />}
+                routeName="approval"
                 permissions={permissions}
                 authenticated={authenticated}
               />

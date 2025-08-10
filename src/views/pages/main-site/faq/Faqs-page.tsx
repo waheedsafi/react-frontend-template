@@ -12,8 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import PrimaryButton from "@/components/custom-ui/button/PrimaryButton";
-import { RotateCcw, TriangleAlert } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 
 type FAQItem = {
   type_name: string;
@@ -73,17 +72,9 @@ export default function FaqsPage() {
             {loader}
           </>
         ) : failed ? (
-          <div className="flex flex-col items-center gap-y-1 w-fit mx-auto p-4 rounded border-[2px] border-dashed">
-            <TriangleAlert className="size-[44px] text-yellow-500" />
-            <h1 className=" text-yellow-500">{t("retry_desc")}</h1>
-            <PrimaryButton
-              onClick={initialize}
-              disabled={loading}
-              className=" bg-transparent hover:bg-red-500 transition-all duration-300 text-red-500 border hover:text-white mx-auto rounded-2xl shadow-none hover:shadow-none"
-            >
-              {t("retry")}
-              <RotateCcw className="size-[18px] rtl:rotate-180" />
-            </PrimaryButton>
+          <div className="flex flex-col items-center gap-y-1 w-fit mx-auto my-12 p-4 rounded border-[2px] border-dashed">
+            <TriangleAlert className="size-[44px] text-red-500" />
+            <h1 className=" text-primary/40">{t("retry_desc")}</h1>
           </div>
         ) : (
           faqs &&

@@ -1,5 +1,5 @@
 import CustomInput from "@/components/custom-ui/input/CustomInput";
-import { Eye, EyeOff, RefreshCcw } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 import { useState } from "react";
 import PrimaryButton from "@/components/custom-ui/button/PrimaryButton";
 import {
@@ -19,7 +19,7 @@ import type { UserInformation, UserPassword } from "@/lib/types";
 import type { UserPermission } from "@/database/models";
 import { useUserAuthState } from "@/stores/auth/use-auth-store";
 import type { ValidateItem } from "@/validation/types";
-import { PermissionEnum, RoleEnum } from "@/database/model-enums";
+import { PermissionEnum } from "@/database/model-enums";
 import { toast } from "sonner";
 export interface EditUserPasswordProps {
   id: string | undefined;
@@ -34,12 +34,10 @@ export function EditUserPassword(props: EditUserPasswordProps) {
   const { user, logoutUser } = useUserAuthState();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
 
   const [passwordData, setPasswordData] = useState<UserPassword>({
     new_password: "",
     confirm_password: "",
-    old_password: "",
   });
   const [error, setError] = useState<Map<string, string>>(new Map());
 
@@ -61,12 +59,6 @@ export function EditUserPassword(props: EditUserPasswordProps) {
           rules: ["required", "min:8", "max:45"],
         },
       ];
-      if (user.role.role != RoleEnum.super) {
-        rules.push({
-          name: "old_password",
-          rules: ["required", "min:8", "max:45"],
-        });
-      }
       const passed = await validate(rules, passwordData, setError);
       if (!passed) {
         setLoading(false);
@@ -77,8 +69,6 @@ export function EditUserPassword(props: EditUserPasswordProps) {
           id: id,
           new_password: passwordData.new_password,
           confirm_password: passwordData.confirm_password,
-          old_password:
-            user.role.role != RoleEnum.super && passwordData.old_password,
         });
         if (response.status == 200) {
           toast.success(t(response.data.message));
@@ -115,33 +105,6 @@ export function EditUserPassword(props: EditUserPasswordProps) {
           <NastranSpinner />
         ) : (
           <div className="grid gap-4 w-full sm:w-[70%] md:w-1/2">
-            {user.role.role != RoleEnum.super && (
-              <CustomInput
-                size_="sm"
-                name="old_password"
-                label={t("old_password")}
-                required={true}
-                requiredHint={`* ${t("required")}`}
-                defaultValue={passwordData["old_password"]}
-                onChange={handleChange}
-                placeholder={t("enter_password")}
-                errorMessage={error.get("old_password")}
-                startContent={
-                  <button
-                    className="focus:outline-none"
-                    type="button"
-                    onClick={() => setIsVisible(!isVisible)}
-                  >
-                    {isVisible ? (
-                      <Eye className="size-[20px] text-primary-icon pointer-events-none" />
-                    ) : (
-                      <EyeOff className="size-[20px] text-primary-icon pointer-events-none" />
-                    )}
-                  </button>
-                }
-                type={isVisible ? "text" : "password"}
-              />
-            )}
             <CustomInput
               size_="sm"
               name="new_password"

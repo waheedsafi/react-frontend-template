@@ -1,3 +1,4 @@
+import NastranSpinner from "@/components/custom-ui/spinner/NastranSpinner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import React from "react";
@@ -6,6 +7,7 @@ export interface CustomCheckboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   onCheckedChange: (value: boolean) => void;
   checked: boolean;
+  loading?: boolean;
   text?: string;
   description?: string;
   requiredHint?: string;
@@ -19,6 +21,7 @@ const CustomCheckbox = React.forwardRef<HTMLInputElement, CustomCheckboxProps>(
       onCheckedChange,
       required,
       checked,
+      loading,
       text,
       description,
       className,
@@ -46,23 +49,28 @@ const CustomCheckbox = React.forwardRef<HTMLInputElement, CustomCheckboxProps>(
             error && "border-red-400 border"
           }`}
         >
-          <Checkbox
-            checked={checked}
-            disabled={readOnly}
-            className={cn("border-primary/70", className)}
-            ref={ref}
-            onCheckedChange={(value: boolean) => {
-              if (!readOnly) onCheckedChange(value);
-            }}
-          />
-          <label className="text-sm font-medium px-2 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          {loading ? (
+            <NastranSpinner label=" " className="size-[20px]" />
+          ) : (
+            <Checkbox
+              checked={checked}
+              disabled={readOnly}
+              className={cn("border-primary/70", className)}
+              ref={ref}
+              onCheckedChange={(value: boolean) => {
+                if (!readOnly) onCheckedChange(value);
+              }}
+            />
+          )}
+
+          <label className="text-sm font-medium space-y-1 px-2 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
             {text && (
               <h1 className="text-start rtl:text-lg-rtl ltr:text-lg-ltr font-semibold">
                 {text}
               </h1>
             )}
             {description && (
-              <h1 className="text-start rtl:pr-1 rtl:text-lg-rtl ltr:text-md-ltr pt-[2px] ltr:leading-3 rtl:leading-5 text-primary/80">
+              <h1 className="text-start rtl:pr-1 rtl:text-lg-rtl ltr:text-lg-ltr pt-[2px] ltr:leading-3.5 rtl:leading-5 text-primary/80">
                 {description}
               </h1>
             )}

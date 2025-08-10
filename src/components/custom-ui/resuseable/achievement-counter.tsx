@@ -43,10 +43,10 @@ const AchievementCounter = React.forwardRef<
         max={total}
       />
       {/* Content */}
-      <h1 className=" font-medium rtl:text-xl-rtl ltr:text-2xl mt-3 text-primary/90">
+      <h1 className=" font-medium rtl:text-xl-rtl ltr:text-2xl mt-3 text-center text-primary/90">
         {title}
       </h1>
-      <p className="rtl:text-md ltr:text-md font-medium text-primary/70">
+      <p className="rtl:text-md ltr:text-md font-medium text-center text-primary/70">
         {description}
       </p>
     </div>

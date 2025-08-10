@@ -6,6 +6,15 @@ export const StatusEnum = {
 export const ChecklistEnum = {
   user: 1,
 };
+
+export const NotifierEnum = {
+  confirm_adding_user: 1,
+};
+export const ApprovalTypeEnum = {
+  approved: 1,
+  pending: 2,
+  rejected: 3,
+};
 export const AboutStaffEnum = {
   manager: 1,
   director: 2,
@@ -32,6 +41,7 @@ export const PermissionEnum = {
       configurations_checklist: 32,
       configurations_division: 33,
       configurations_role: 34,
+      configurations_application: 35,
     },
   },
   users: {
