@@ -26,6 +26,7 @@ export const AboutStaffEnum = {
 export const RoleEnum = {
   super: 1,
   debugger: 2,
+  administrator: 3,
 };
 export const PermissionEnum = {
   dashboard: { name: "dashboard", sub: {} },
@@ -66,6 +67,8 @@ export const PermissionEnum = {
       office: 93,
       technical_sup: 94,
       slideshow: 95,
+      faqs: 96,
+      faqs_type: 97,
     },
   },
   approval: {

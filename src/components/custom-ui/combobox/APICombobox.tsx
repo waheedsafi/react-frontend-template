@@ -55,6 +55,7 @@ export interface IAPIComboboxProps {
   translate?: boolean;
   cacheData?: boolean;
   showIcon?: boolean;
+  parentClassName?: string;
 }
 
 function APICombobox(props: IAPIComboboxProps) {
@@ -75,6 +76,7 @@ function APICombobox(props: IAPIComboboxProps) {
     placeholderText,
     translate,
     showIcon = true,
+    parentClassName,
     cacheData = true,
   } = props;
   const [loading, setLoading] = useState(true);
@@ -181,7 +183,7 @@ function APICombobox(props: IAPIComboboxProps) {
     setOpen(false);
   };
   return (
-    <div className={`self-start relative w-full`}>
+    <div className={cn(`self-start relative w-full`, parentClassName)}>
       <Popover
         open={open}
         onOpenChange={(selection: any) => {

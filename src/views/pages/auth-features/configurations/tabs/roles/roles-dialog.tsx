@@ -416,7 +416,7 @@ export default function RoleDialog(props: RoleDialogProps) {
                 // defaultOptions={frameworks}
                 selectedOptions={userData.user_role_assignment}
                 errorMessage={error.get("user_role_assignment")}
-                apiUrl={role ? `roles/by-role/${role.id}` : "roles"}
+                apiUrl={role ? `roles/by-role/${role.id}` : "roles/by/user"}
                 emptyIndicator={
                   <p className="text-center text-sm">{t("no_item")}</p>
                 }

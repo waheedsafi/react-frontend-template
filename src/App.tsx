@@ -1,4 +1,4 @@
-import { getGuestRouter, getAuthRouter } from "./routes/routes";
+import { getAuthRouter } from "./routes/routes";
 import { useGeneralAuthState } from "@/stores/auth/use-auth-store";
 
 export default function App() {
@@ -6,11 +6,8 @@ export default function App() {
   if (loading) return;
   let routes = null;
 
-  if (!authenticated) routes = getGuestRouter();
-  else {
-    routes = authenticated
-      ? getAuthRouter(user, authenticated)
-      : getGuestRouter();
-  }
+  routes = getAuthRouter(user, authenticated);
+  // else routes = getAuthRouter(user, authenticated);
+
   return routes;
 }

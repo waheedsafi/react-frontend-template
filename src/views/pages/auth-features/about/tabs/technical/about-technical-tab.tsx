@@ -1,5 +1,5 @@
 import axiosClient from "@/lib/axois-client";
-import TechnicalTable from "./parts/technical-table";
+import TechnicalTable from "../parts/technical-table";
 import type { IStaffSingle, UserPermission } from "@/database/models";
 import { useCallback, useEffect, useState } from "react";
 import { PermissionEnum } from "@/database/model-enums";

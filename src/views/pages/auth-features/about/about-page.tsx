@@ -10,10 +10,12 @@ import {
   BreadcrumbItem,
   BreadcrumbSeparator,
 } from "@/components/custom-ui/breadcrumb/Breadcrumb";
-import AboutTechnicalTab from "@/views/pages/auth-features/about/tabs/about-technical-tab";
-import AboutOfficeTab from "@/views/pages/auth-features/about/tabs/about-office-tab";
-import AboutSlideshowTab from "@/views/pages/auth-features/about/tabs/about-slideshow-tab";
+import AboutTechnicalTab from "@/views/pages/auth-features/about/tabs/technical/about-technical-tab";
 import AboutForm from "@/views/pages/auth-features/about/tabs/parts/about-form";
+import AboutOfficeTab from "@/views/pages/auth-features/about/tabs/office/about-office-tab";
+import AboutSlideshowTab from "@/views/pages/auth-features/about/tabs/slideshow/about-slideshow-tab";
+import FaqsTab from "@/views/pages/auth-features/about/tabs/faqs/faqs-tab";
+import FaqsTypeTab from "@/views/pages/auth-features/about/tabs/faqs-type/faqs-type-tab";
 
 export default function AboutPage() {
   const { user } = useUserAuthState();
@@ -82,6 +84,18 @@ export default function AboutPage() {
           className="w-full px-2 pt-8"
         >
           <AboutOfficeTab permission={per} />
+        </TabsContent>
+        <TabsContent
+          value={PermissionEnum.about.sub.faqs.toString()}
+          className="w-full px-2 pt-8"
+        >
+          <FaqsTab permissions={per} />
+        </TabsContent>
+        <TabsContent
+          value={PermissionEnum.about.sub.faqs_type.toString()}
+          className="w-full px-2 pt-8"
+        >
+          <FaqsTypeTab permissions={per} />
         </TabsContent>
       </Tabs>
     </div>

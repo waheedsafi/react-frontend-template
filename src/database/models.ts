@@ -60,6 +60,14 @@ export interface BasicModel {
   name: string;
   created_at: string;
 }
+export interface FAQ {
+  id: number;
+  question: string;
+  order?: number;
+  type: string;
+  answer?: string;
+  created_at: string;
+}
 export type CheckList = {
   id: string;
   type: string;

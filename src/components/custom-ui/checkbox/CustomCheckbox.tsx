@@ -63,7 +63,7 @@ const CustomCheckbox = React.forwardRef<HTMLInputElement, CustomCheckboxProps>(
             />
           )}
 
-          <label className="text-sm font-medium space-y-1 px-2 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          <label className="text-sm font-medium space-y-1 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
             {text && (
               <h1 className="text-start rtl:text-lg-rtl ltr:text-lg-ltr font-semibold">
                 {text}

@@ -30,6 +30,7 @@ export default function UserEditHeader(props: UserEditHeaderProps) {
         {userData?.contact}
       </h1>
       <BooleanStatusButton
+        className="mt-2"
         getColor={function (): {
           style: string;
           value?: string;

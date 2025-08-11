@@ -7,6 +7,7 @@ import React, { Suspense } from "react";
 import { GlobalStateProvider } from "@/context/GlobalStateContext";
 import NastranSpinner from "@/components/custom-ui/spinner/NastranSpinner";
 const LazyApp = React.lazy(() => import("@/App.tsx"));
+import { BrowserRouter } from "react-router";
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
@@ -19,7 +20,9 @@ createRoot(document.getElementById("root")!).render(
         }
       >
         <GlobalStateProvider>
-          <LazyApp />
+          <BrowserRouter>
+            <LazyApp />
+          </BrowserRouter>
         </GlobalStateProvider>
       </Suspense>
     </AppProvider>

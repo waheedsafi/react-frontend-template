@@ -36,7 +36,7 @@ export default function FaqsPage() {
       if (loading) return;
       if (!loading) setLoading(true);
 
-      const response = await axiosClient.get(`faqs`);
+      const response = await axiosClient.get(`faqs-public`);
       if (response.status === 200) {
         setFaqs(response.data);
         if (failed) setFailed(false);

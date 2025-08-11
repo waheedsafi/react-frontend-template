@@ -10,11 +10,11 @@ import { t } from "i18next";
 import { useEffect, useState } from "react";
 import { setServerError, validate } from "@/validation/validation";
 import axiosClient from "@/lib/axois-client";
-import StaffInputs from "./parts/staff-inputs";
 import NastranSpinner from "@/components/custom-ui/spinner/NastranSpinner";
 import type { UserPermission } from "@/database/models";
 import { toast } from "sonner";
 import { PermissionEnum } from "@/database/model-enums";
+import StaffInputs from "@/views/pages/auth-features/about/tabs/parts/staff-inputs";
 
 interface AboutOfficeTabProps {
   permission: UserPermission;
