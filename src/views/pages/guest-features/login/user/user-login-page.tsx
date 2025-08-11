@@ -45,7 +45,7 @@ export default function UserLoginPage() {
       true
     );
     if (response.status == 200) {
-      toast.success(response.data.message);
+      toast.success(t("success"));
       navigate("/dashboard", { replace: true });
     } else {
       toast.error(response?.response?.data?.message);

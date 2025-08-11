@@ -29,7 +29,7 @@ export default function HeaderSection(props: IHeaderSectionProps) {
             once: true,
           }}
         >
-          <h2 className="text-4xl relative md:text-5xl break-words leading-normal 2xl:text-7xl font-bold bg-gradient-to-r from-fourth to-fourth/70 text-transparent bg-clip-text block ">
+          <h2 className="text-3xl relative md:text-5xl break-words leading-normal 2xl:text-7xl font-bold bg-gradient-to-r from-fourth to-fourth/70 text-transparent bg-clip-text block ">
             {title}
             <span className="absolute -top-3 rtl:right-0 ltr:left-0 h-0.5 bg-fourth px-6 md:px-24" />
           </h2>
@@ -50,7 +50,7 @@ export default function HeaderSection(props: IHeaderSectionProps) {
             once: true,
           }}
         >
-          <p className="text-lg text-white/90 leading-relaxed max-w-xl">
+          <p className="text-lg rtl:text-4xl-rtl text-white/90 leading-relaxed max-w-2xl">
             {description}
           </p>
         </AnimatedItem>

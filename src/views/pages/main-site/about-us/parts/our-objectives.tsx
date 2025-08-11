@@ -63,7 +63,7 @@ export default function OurObjectives(props: OurObjectivesProps) {
                   once: true,
                 }}
               >
-                <p className="text-md md:text-lg text-primary/70 text-wrap max-w-prose">
+                <p className="text-md md:text-lg text-justify text-primary/70 text-wrap max-w-prose">
                   {description}
                 </p>
               </AnimatedItem>

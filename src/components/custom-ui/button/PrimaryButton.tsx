@@ -20,9 +20,9 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(
         ref={ref}
         size="sm"
         className={cn(
-          `font-semibold rounded-sm cursor-pointer rtl:font-semibold rtl:text-sm-rtl ltr:text-lg-ltr
+          `font-semibold rounded-sm cursor-pointer ltr:text-md-ltr sm:ltr:text-lg-ltr rtl:font-semibold rtl:text-sm-rtl
            hover:shadow transition w-fit text-primary-foreground/80 shadow-md shadow-primary/50
-           px-5 py-2 leading-normal duration-200 ease-linear hover:opacity-90 hover:text-primary-foreground ${style}`,
+            px-2 sm:px-5 py-2 leading-normal duration-200 ease-linear hover:opacity-90 hover:text-primary-foreground ${style}`,
           className
         )}
       >

@@ -79,7 +79,7 @@ function StepperSteps(props: IStepperProps) {
     return (
       <div
         key={index}
-        className={` ${
+        className={`${
           index != newStep.length - 1
             ? "w-full flex items-center"
             : "flex items-center"

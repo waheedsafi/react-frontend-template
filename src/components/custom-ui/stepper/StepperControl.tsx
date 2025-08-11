@@ -58,7 +58,7 @@ function StepperControl(props: IStepperControlProps) {
           currentStep == 1
             ? "opacity-50 cursor-not-allowed"
             : "hover:shadow shadow-md shadow-primary/50 hover:text-primary-foreground"
-        } bg-primary flex gap-x-2 items-center rounded-md transition rtl:text-sm-rtl ltr:text-[14px] font-semibold w-fit text-primary-foreground/80 px-3 py-[6px] hover:bg-primary`}
+        } bg-primary flex gap-x-2 items-center rounded-md transition rtl:text-sm-rtl ltr:text-md-ltr sm:ltr:text-lg-ltr font-semibold w-fit text-primary-foreground/80 px-3 py-[6px] hover:bg-primary`}
       >
         <ChevronLeft className="size-[18px] inline rtl:rotate-180" />
         {backText}
