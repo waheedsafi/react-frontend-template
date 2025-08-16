@@ -456,7 +456,7 @@ export function UserTable() {
                     ShimmerIconClassName="size-[18px]"
                     shimmerClassName="size-[36px] mx-auto shadow-lg border border-tertiary rounded-full"
                     className="size-[36px] object-center object-cover mx-auto shadow-lg border border-tertiary rounded-full"
-                    routeIdentifier={"profile"}
+                    routeIdentifier={"private"}
                   />
                 </TableCell>
                 <TableCell className="rtl:text-md-rtl truncate px-1 py-0">
@@ -509,7 +509,7 @@ export function UserTable() {
           "page"
         )} ${users.unFilterList.currentPage} ${t("of")} ${
           users.unFilterList.lastPage
-        }`}</h1>
+        } / ${t("total")} ${users.filterList.totalItems}`}</h1>
         <Pagination
           lastPage={users.unFilterList.lastPage}
           onPageChange={async (page) =>

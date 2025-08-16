@@ -30,7 +30,7 @@ export default function HomeHeader() {
     initialize();
   }, [i18n.language]);
   const tabStyle =
-    "data-[state=active]:border-b-fourth overflow-hidden whitespace-nowrap text-primary-foreground data-[state=active]:bg-transparent border-b-[2px] h-full rounded-none";
+    "data-[state=active]:border-b-fourth ltr:text-sm rtl:sm:text-lg-rtl rtl:text-[14px] rtl:font-semibold overflow-hidden whitespace-nowrap text-primary-foreground data-[state=active]:bg-transparent border-b-[2px] h-full rounded-none";
 
   const tabList = useMemo(
     () =>

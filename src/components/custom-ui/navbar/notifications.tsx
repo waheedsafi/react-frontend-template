@@ -1,4 +1,4 @@
-import { Bell, Trash2 } from "lucide-react";
+import { Bell } from "lucide-react";
 import { memo, useEffect, useState } from "react";
 import {
   DropdownMenu,
@@ -10,38 +10,52 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTranslation } from "react-i18next";
 import axiosClient from "@/lib/axois-client";
-import type { Notifications } from "@/database/models";
+import type { Notification } from "@/database/models";
 import { toast } from "sonner";
+import { useSocketEvent } from "@/hook/use-socket-event";
+import Shimmer from "@/components/custom-ui/shimmer/shimmer";
+import { cn } from "@/lib/utils";
 
 function Notifications() {
   const { t, i18n } = useTranslation();
-  const [items, setItems] = useState<Notifications[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [information, setInformation] = useState({
-    submitted: false,
+  const [notifications, setNotifications] = useState<{
+    items: Notification[];
+    submitted: boolean;
+    unreadCount: number;
+  }>({
+    items: [],
+    submitted: true,
     unreadCount: 0,
   });
-  // const initialize = async () => {
-  //   try {
-  //     const response = await axiosClient.get("notifications");
-  //     if (response.status == 200) {
-  //       setItems(response.data.notifications);
-  //       setInformation({
-  //         submitted: response.data.unread_count == 0 ? true : false,
-  //         unreadCount: response.data.unread_count,
-  //       });
-  //     }
-  //   } catch (error: any) {
-  //     console.log(error);
-  //     toast({
-  //       toastType: "ERROR",
-  //       title: t("Error"),
-  //       description: t(error.response.data.message),
-  //     });
-  //   }
-  // };
+  const [loading, setLoading] = useState<boolean>(true);
+  const [storing, setStoring] = useState<boolean>(false);
+  const onNotification = (data: Notification) => {
+    setNotifications((prev) => ({
+      submitted: false,
+      unreadCount: prev.unreadCount == 0 ? 1 : prev.unreadCount + 1,
+      items: [data, ...prev.items],
+    }));
+  };
+  useSocketEvent("notification", onNotification);
+  const initialize = async () => {
+    try {
+      const response = await axiosClient.get("notifications");
+      if (response.status == 200) {
+        setNotifications({
+          items: response.data.notifications,
+          submitted: response.data.unread_count == 0 ? true : false,
+          unreadCount: response.data.unread_count,
+        });
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    // initialize();
+    initialize();
   }, []);
 
   const year = t("year");
@@ -53,50 +67,34 @@ function Notifications() {
   const justNow = t("just_now");
   const direction = i18n.dir();
   const notificationReadSubmit = async () => {
-    if (loading) return;
+    if (storing) return;
 
-    if (!information.submitted) {
+    if (!notifications.submitted) {
       try {
-        setLoading(true);
+        setStoring(true);
         const arr: string[] = [];
-        items.forEach((item: Notifications) => {
-          if (item.read_status == 0) arr.push(item.id);
+        notifications.items.forEach((item: Notification) => {
+          if (!item.is_read) arr.push(item.id);
         });
-        const form = new FormData();
-        form.append("ids", JSON.stringify(arr));
-        const response = await axiosClient.post("notification-update", form);
+        const response = await axiosClient.put("notifications", {
+          ids: arr,
+        });
         if (response.status == 200) {
-          setInformation({
+          setNotifications((prev) => ({
+            ...prev,
+            items: prev.items.map((item) =>
+              !item.is_read ? { ...item, is_read: true } : item
+            ),
             submitted: true,
             unreadCount: 0,
-          });
+          }));
         }
       } catch (error: any) {
         console.log(error);
         toast.error(error.response.data.message);
       } finally {
-        setLoading(false);
+        setStoring(false);
       }
-    }
-  };
-  const deleteNotification = async (id: string) => {
-    if (loading) return;
-    try {
-      setLoading(true);
-
-      const form = new FormData();
-      form.append("id", id);
-      const response = await axiosClient.delete("notification-delete/" + id);
-      if (response.status == 200) {
-        toast.success(t("success"));
-        const updatedItems = items.filter((item) => item.id !== id);
-        setItems(updatedItems);
-      }
-    } catch (error: any) {
-      console.log(error);
-      toast.error(error.response.data.message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -105,26 +103,36 @@ function Notifications() {
       <DropdownMenuTrigger asChild>
         <div className="ltr:mr-3 rtl:ml-2 mt-[6px] relative select-none cursor-pointer">
           <Bell className="fill-primary size-[18px]" />
-          {information.unreadCount != 0 && (
+          {notifications.unreadCount != 0 && (
             <h1 className="absolute my-auto top-[-6px] ltr:right-[-6px] rtl:right-[-6px] shadow-md font-bold min-h-[16px] max-w-[18px] min-w-[17px] text-center text-primary-foreground bg-red-400 text-[10px] rounded-full">
-              {information.unreadCount}
+              {notifications.unreadCount}
             </h1>
           )}
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="max-h-[50svh] overflow-y-auto z-10 rtl:text-md-rtl ltr:text-lg-ltr">
+      <DropdownMenuContent className="max-h-[50svh] w-[200px] sm:w-[300px] backdrop-blur-md z-40 overflow-y-auto rtl:text-md-rtl ltr:text-lg-ltr">
         <DropdownMenuLabel>
           <h1>{t("notifications")}</h1>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {items.length == 0 ? (
+        {loading ? (
+          <>
+            <Shimmer className="h-10" />
+            <Shimmer className="h-10 mt-2" />
+          </>
+        ) : notifications.items.length == 0 ? (
           <h1 className="text-center py-4">{t("no_notification")}</h1>
         ) : (
-          items.map((item: Notifications) => (
-            <DropdownMenuItem className="rtl:justify-end" key={item.id}>
+          notifications.items.map((item: Notification, index: number) => (
+            <DropdownMenuItem
+              className={cn(
+                "rtl:justify-end rounded-none hover:bg-primary/5",
+                index != 0 && "border-t"
+              )}
+              key={index}
+            >
               <NotificationItem
                 item={item}
-                deleteOnClick={deleteNotification}
                 year={year}
                 month={month}
                 day={day}
@@ -143,7 +151,6 @@ function Notifications() {
 
 const NotificationItem = ({
   item,
-  deleteOnClick,
   year,
   month,
   day,
@@ -180,17 +187,16 @@ const NotificationItem = ({
     }
   };
   return (
-    <div className="flex flex-col items-start gap-x-[2px] w-full relative">
-      <h1 className="flex-1">{item.message}</h1>
-      <div className="flex justify-between w-full border-t pt-[3px]">
-        <h1 className=" text-primary/80">
-          {calculateCreatedHours(item.created_at)}
-        </h1>
-        <Trash2
-          onClick={() => deleteOnClick(item.id)}
-          className="size-[21px] p-[3px] text-red-400 bg-primary/85 hover:bg-primary cursor-pointer rounded-full"
-        />
-      </div>
+    <div
+      className={cn(
+        "flex flex-col cursor-pointer items-start p-1 gap-x-[2px] w-full relative",
+        !item.is_read && "bg-slate-400/15 rounded-md"
+      )}
+    >
+      <h1 className="flex-1 line-clamp-2">{item.message}</h1>
+      <h1 className="text-primary/80">
+        {calculateCreatedHours(item.created_at)}
+      </h1>
     </div>
   );
 };

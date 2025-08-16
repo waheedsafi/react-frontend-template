@@ -179,7 +179,7 @@ const MultiTabInput = React.forwardRef<HTMLInputElement, MultiTabInputProps>(
         {/* Title */}
         <h1 className="ltr:text-2xl-ltr rtl:text-xl-rtl text-start">{title}</h1>
         {/* Header */}
-        <div className={cn("flex flex-wrap gap-y-2 gap-x-4", tabsClassName)}>
+        <div className={cn("flex flex-wrap gap-y-2 gap-x-2", tabsClassName)}>
           {elements}
         </div>
         {/* Body */}
@@ -196,11 +196,15 @@ const MultiTabInput = React.forwardRef<HTMLInputElement, MultiTabInputProps>(
             height: "50px",
           }}
           className={cn(
-            `focus-visible:ring-0 mt-2 bg-card dark:!bg-black/30 focus-visible:border-primary/30 focus-visible:ring-offset-0 rtl:pr-[12px] ltr:ps-[12px] ${
-              className ?? ""
-            } ${
+            `focus-visible:ring-0 mt-2 bg-card dark:!bg-black/30 focus-visible:border-primary/30 focus-visible:ring-offset-0 rtl:pr-[12px] ltr:ps-[12px] ${className} ${
               errorMessages.length > 0 ? "border-red-400 !border-b border" : ""
-            } ${props.readOnly ? "cursor-not-allowed" : ""}`
+            } ${props.readOnly ? "cursor-not-allowed" : ""}
+             ${
+               selectedTabName.endsWith("farsi") ||
+               selectedTabName.endsWith("pashto")
+                 ? " text-end"
+                 : ""
+             }`
           )}
         />
         {errorMessages.map((error: string, index: number) => (

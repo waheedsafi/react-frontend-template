@@ -10,7 +10,7 @@ export interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   shimmerClassName?: string;
   ShimmerIconClassName?: string;
   src: string | undefined;
-  routeIdentifier?: "public" | "profile";
+  routeIdentifier?: "public" | "profile" | "private";
 }
 
 // Custom image cache singleton

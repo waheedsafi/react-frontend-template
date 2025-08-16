@@ -385,7 +385,7 @@ export function Activity() {
           "page"
         )} ${activities.unFilterList.currentPage} ${t("of")} ${
           activities.unFilterList.lastPage
-        }`}</h1>
+        } / ${t("total")} ${activities.filterList.totalItems}`}</h1>
         <Pagination
           lastPage={activities.unFilterList.lastPage}
           onPageChange={async (page) =>

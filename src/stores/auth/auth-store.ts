@@ -13,6 +13,7 @@ type AuthUser = User;
 interface AuthStore {
   user: AuthUser;
   authenticated: boolean;
+  token?: string;
   loading: boolean;
   loginUser: (
     email: string,
@@ -61,7 +62,12 @@ export const useAuthStore = create<AuthStore>((set) => ({
           setToken({ type: "user" });
         }
 
-        set({ user, authenticated: true, loading: false });
+        set({
+          user,
+          authenticated: true,
+          loading: false,
+          token: response.data?.access_token,
+        });
       }
       return response;
     } catch (error) {
@@ -87,15 +93,21 @@ export const useAuthStore = create<AuthStore>((set) => ({
   loadUser: async () => {
     const config = getConfiguration();
 
+    const type = config?.type ? config?.type : "user";
     try {
-      const response = await axiosClient.get(`auth-${config?.type}`, {
+      const response = await axiosClient.get(`auth-${type}`, {
         headers: { "Content-Type": "application/json" },
       });
 
       if (response.status === 200) {
         const user = response.data.user;
         user.permissions = returnPermissionsMap(response.data?.permissions);
-        set({ user, authenticated: true, loading: false });
+        set({
+          user,
+          authenticated: true,
+          loading: false,
+          token: response.data?.access_token,
+        });
       } else {
         set({ loading: false });
       }

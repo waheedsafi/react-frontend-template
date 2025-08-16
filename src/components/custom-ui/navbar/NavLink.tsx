@@ -46,7 +46,7 @@ const NavLink = (props: NavLinkProps) => {
             rounded-full
             py-2 md:py-0            
             md:hover:bg-transparent md:bg-transparent
-            ltr:text-sm rtl:sm:text-md-rtl rtl:text-[13px] rtl:sm:font-normal rtl:font-semibold`,
+            ltr:text-sm rtl:sm:text-lg-rtl rtl:text-[14px] rtl:font-semibold`,
           style
         )}
       >

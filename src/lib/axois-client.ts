@@ -1,5 +1,7 @@
 import { setToken } from "@/lib/utils";
+import { useAuthStore } from "@/stores/auth/auth-store";
 import axios from "axios";
+
 // import secureLocalStorage from "react-secure-storage";
 const axiosClient = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1/`,
@@ -45,9 +47,11 @@ export async function refreshAccessToken() {
         withCredentials: true, // Ensure credentials (cookies) are included
       }
     );
-    const newType = response.data.type.toLowerCase();
+    useAuthStore.setState({
+      token: response.data?.access_token,
+    });
     setToken({
-      type: newType,
+      type: response.data.type.toLowerCase(),
     });
   } catch (error: any) {
     throw error;

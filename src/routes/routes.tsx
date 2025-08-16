@@ -9,6 +9,8 @@ import MainPage from "@/views/pages/main-site/main/main-page";
 import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import UnProtectedRoute from "@/routes/unprotected-route";
+import AuthenticatedRoute from "@/routes/authenticated-route";
+import LogsPage from "@/views/pages/auth-features/logs/logs-page";
 const SuperDashboardPage = lazy(
   () =>
     import("@/views/pages/auth-features/dashboard/super/super-dashboard-page")
@@ -52,7 +54,15 @@ export const getAuthRouter = (user: User, authenticated: boolean) => {
     <Routes>
       {/* Super Routes (Protected) */}
       <Route path="/dashboard" element={<AuthLayout />}>
-        <Route index element={<SuperDashboardPage />} />
+        <Route
+          index
+          element={
+            <AuthenticatedRoute
+              element={<SuperDashboardPage />}
+              authenticated={authenticated}
+            />
+          }
+        />
         <Route
           path="users"
           element={
@@ -119,14 +129,41 @@ export const getAuthRouter = (user: User, authenticated: boolean) => {
             />
           }
         />
-        <Route path="settings" element={<SettingsPage />} />
-        <Route path="profile" element={<UsersProfilePage />} />
+        <Route
+          path="settings"
+          element={
+            <AuthenticatedRoute
+              element={<SettingsPage />}
+              authenticated={authenticated}
+            />
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <AuthenticatedRoute
+              element={<UsersProfilePage />}
+              authenticated={authenticated}
+            />
+          }
+        />
+        <Route
+          path="logs"
+          element={
+            <ProtectedRoute
+              element={<LogsPage />}
+              routeName="logs"
+              permissions={permissions}
+              authenticated={authenticated}
+            />
+          }
+        />
       </Route>
       {/* Site Routes */}
       <Route path="/" element={<SiteLayout />}>
         {/* These routes will be passed as children */}
         {site}
-      </Route>{" "}
+      </Route>
       <Route path="/" element={<GuestLayout />}>
         <Route
           path="/login"

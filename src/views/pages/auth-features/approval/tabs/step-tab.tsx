@@ -402,7 +402,7 @@ export default function StepTab(props: ApprovedStepTabProps) {
           "page"
         )} ${lists.unFilterList.currentPage} ${t("of")} ${
           lists.unFilterList.lastPage
-        }`}</h1>
+        } / ${t("total")} ${lists.filterList.totalItems}`}</h1>
         <Pagination
           lastPage={lists.unFilterList.lastPage}
           onPageChange={async (page) =>

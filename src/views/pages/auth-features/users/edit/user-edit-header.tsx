@@ -17,7 +17,7 @@ export default function UserEditHeader(props: UserEditHeaderProps) {
         alt="Avatar"
         shimmerClassName="size-[86px] !mb-4 mt-6 mx-auto shadow-lg border border-primary/30 rounded-full"
         className="size-[86px] !mb-4 mt-6 object-center object-cover mx-auto shadow-lg border border-primary/50 rounded-full"
-        routeIdentifier={"profile"}
+        routeIdentifier={"private"}
       />
 
       <h1 className="text-primary font-semibold rtl:text-2xl-rtl ltr:text-4xl-ltr">
@@ -29,23 +29,25 @@ export default function UserEditHeader(props: UserEditHeaderProps) {
       <h1 dir="ltr" className="text-primary rtl:text-md-rtl ltr:text-xl-ltr">
         {userData?.contact}
       </h1>
-      <BooleanStatusButton
-        className="mt-2"
-        getColor={function (): {
-          style: string;
-          value?: string;
-        } {
-          return StatusEnum.active === userData?.status_id
-            ? {
-                style: "border-green-500/90",
-                value: userData.status,
-              }
-            : {
-                style: "border-red-500",
-                value: userData?.status,
-              };
-        }}
-      />
+      {userData && (
+        <BooleanStatusButton
+          className="mt-2"
+          getColor={function (): {
+            style: string;
+            value?: string;
+          } {
+            return StatusEnum.active === userData?.status_id
+              ? {
+                  style: "border-green-500/90",
+                  value: userData.status,
+                }
+              : {
+                  style: "border-red-500",
+                  value: userData?.status,
+                };
+          }}
+        />
+      )}
     </div>
   );
 }

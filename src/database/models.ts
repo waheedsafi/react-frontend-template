@@ -40,11 +40,11 @@ export type User = {
   created_at: string;
   gender: string;
 };
-export type Notifications = {
+export type Notification = {
   id: string;
   message: string;
-  type: string;
-  read_status: number;
+  notifier_id: string;
+  is_read: boolean;
   created_at: string;
 };
 export type Staff = {
@@ -171,5 +171,18 @@ export interface Applications {
   value: string;
   description: string;
   name: string;
+}
+export interface ErrorLog {
+  id: string;
+  created_at: string;
+  error_message: string;
+  username: string;
+  user_id: number | string;
+  ip_address: string;
+  method: string;
+  exception_type: string;
+  error_code: string;
+  uri: string;
+  trace: string;
 }
 // Application

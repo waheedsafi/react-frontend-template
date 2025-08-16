@@ -89,6 +89,7 @@ export default function ApplicationTab(props: ApplicationTabProps) {
           if (item.cast_to === "bool") {
             return (
               <CustomCheckbox
+                key={item.name}
                 loading={storing}
                 checked={item.value === "true"}
                 onCheckedChange={(value: boolean) => onChangeBool(item, value)}

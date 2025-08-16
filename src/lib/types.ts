@@ -95,5 +95,10 @@ export interface Option {
 }
 export type ActivitySearch = "user" | "type";
 export type ApprovalSearch = "requester" | "id";
-
+export type ErrorLogSort = "uri" | "method" | "created_at";
+export type ErrorLogSearch =
+  | "uri"
+  | "error_code"
+  | "ip_address"
+  | "exception_type";
 // application

@@ -284,7 +284,7 @@ export default function ChecklistDialog(props: ChecklistDialogProps) {
                 errorData={error}
                 placeholder={t("detail")}
                 className="rtl:text-xl-rtl rounded-none border-t border-x-0 border-b-0"
-                tabsClassName="gap-x-5 px-3"
+                tabsClassName="sm:gap-x-5 px-3"
               >
                 <SingleTab>english</SingleTab>
                 <SingleTab>farsi</SingleTab>

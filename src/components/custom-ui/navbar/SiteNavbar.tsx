@@ -21,8 +21,6 @@ export default function SiteNavbar() {
     >
       <AppLogo titleClassName="text-nowrap" />
       <div className="flex items-center gap-x-1 z-10 bg-card absolute rtl:left-2 ltr:right-2">
-        <ThemeSwitch />
-        <LanguageChanger />
         {authenticated ? (
           <>
             <Notifications />
@@ -38,6 +36,8 @@ export default function SiteNavbar() {
             <h1 className="hidden sm:block">{t("login")}</h1>
           </TertiaryButton>
         )}
+        <LanguageChanger />
+        <ThemeSwitch />
       </div>
     </div>
   );

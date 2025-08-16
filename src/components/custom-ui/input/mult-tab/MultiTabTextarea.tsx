@@ -64,7 +64,6 @@ const MultiTabTextarea = React.forwardRef<
         // Cast child here to ReactElement<any>
         const element = child as React.ReactElement<any>;
         const levelOneChildren = element.props.children;
-
         if (element.type === SingleTab) {
           const selectItemText = generateUniqueName(name, levelOneChildren);
           if (mainIndex === 0 && !selectedTab) {
@@ -162,7 +161,7 @@ const MultiTabTextarea = React.forwardRef<
       {/* Title */}
       <h1 className="ltr:text-2xl-ltr rtl:text-xl-rtl text-start">{title}</h1>
       {/* Header */}
-      <div className={cn("flex flex-wrap gap-y-2 gap-x-4", tabsClassName)}>
+      <div className={cn("flex flex-wrap gap-y-2 gap-x-2", tabsClassName)}>
         {elements}
       </div>
       {/* Body */}
@@ -171,6 +170,11 @@ const MultiTabTextarea = React.forwardRef<
         className={cn(
           `mt-2 focus-visible:ring-0 bg-card dark:bg-card-secondary focus-visible:border-primary/30 focus-visible:ring-offset-0 ${
             errorMessages.length > 0 ? "border-red-400 !border-b" : ""
+          }  ${
+            selectedTabName.endsWith("farsi") ||
+            selectedTabName.endsWith("pashto")
+              ? "text-end"
+              : ""
           }`,
           className
         )}
