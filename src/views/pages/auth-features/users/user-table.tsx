@@ -174,7 +174,7 @@ export function UserTable() {
     setUsers((prevState) => ({
       filterList: {
         ...prevState.filterList,
-        data: [user, ...prevState.filterList.data],
+        data: [user, ...prevState.unFilterList.data],
       },
       unFilterList: {
         ...prevState.unFilterList,

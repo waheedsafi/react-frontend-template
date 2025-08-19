@@ -34,8 +34,8 @@ function ProfileDropdown(props: ProfileDropdownProps) {
             className="size-[36px] ltr:mr-8 rtl:ml-8 object-center object-cover shadow-lg rounded-full"
             routeIdentifier={"profile"}
           />
-          <span className="absolute bottom-0 left-6 size-[9px] bg-green-400 border-[2px] border-card rounded-full" />
-          <span className="absolute bottom-[1px] left-[25px] size-[8px] animate-ping border-green-400 border-[1px] rounded-full" />
+          <span className="absolute bottom-0 rtl:right-6 ltr:left-6 size-[9px] bg-green-400 border-[2px] border-card rounded-full" />
+          <span className="absolute bottom-[1px] rtl:right-[25px] ltr:left-[25px] size-[8px] animate-ping border-green-400 border-[1px] rounded-full" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="z-20 rtl:text-end">
@@ -68,16 +68,8 @@ function ProfileDropdown(props: ProfileDropdownProps) {
         <DropdownMenuItem
           className="cursor-pointer rtl:text-md-rtl ltr:text-xs rtl:font-semibold"
           onClick={async () => {
-            // if (user.role.name === "donor") {
-            //   await logoutDonor();
-            //   navigate("/auth/donor/login", { replace: true });
-            // } else if (user.role.name === "ngo") {
-            //   await logoutNgo();
-            //   navigate("/auth/ngo/login", { replace: true });
-            // } else {
             await logoutUser();
             navigate("/auth/user/login", { replace: true });
-            // }
           }}
         >
           {t("log_out")}

@@ -1,9 +1,8 @@
 import { Bell } from "lucide-react";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -13,76 +12,53 @@ import axiosClient from "@/lib/axois-client";
 import type { Notification } from "@/database/models";
 import { toast } from "sonner";
 import { useSocketEvent } from "@/hook/use-socket-event";
-import Shimmer from "@/components/custom-ui/shimmer/shimmer";
 import { cn } from "@/lib/utils";
-
+import InfiniteScrollOnGivenDiv from "@/components/custom-ui/resuseable/ScrollNotificationWithFetch";
+const PAGE_SIZE = 10;
+const SCROLL_THRESHOLD = 100;
 function Notifications() {
   const { t, i18n } = useTranslation();
+  const isFetchingRef = useRef(false);
+  const [hasMore, setHasMore] = useState(false);
+
   const [notifications, setNotifications] = useState<{
-    items: Notification[];
+    items: Notification[] | undefined;
     submitted: boolean;
     unreadCount: number;
   }>({
-    items: [],
+    items: undefined,
     submitted: true,
     unreadCount: 0,
   });
-  const [loading, setLoading] = useState<boolean>(true);
   const [storing, setStoring] = useState<boolean>(false);
-  const onNotification = (data: Notification) => {
-    setNotifications((prev) => ({
-      submitted: false,
-      unreadCount: prev.unreadCount == 0 ? 1 : prev.unreadCount + 1,
-      items: [data, ...prev.items],
-    }));
+  const onNotification = (data: any) => {
+    try {
+      const message = {
+        message: data?.message[i18n.language],
+        notifier_id: data?.notifier_id,
+        created_at: data?.created_at,
+      } as Notification;
+      setNotifications((prev) => ({
+        submitted: false,
+        unreadCount: prev.unreadCount == 0 ? 1 : prev.unreadCount + 1,
+        items: [message, ...(prev.items ?? [])],
+      }));
+    } catch (e) {}
   };
   useSocketEvent("notification", onNotification);
-  const initialize = async () => {
-    try {
-      const response = await axiosClient.get("notifications");
-      if (response.status == 200) {
-        setNotifications({
-          items: response.data.notifications,
-          submitted: response.data.unread_count == 0 ? true : false,
-          unreadCount: response.data.unread_count,
-        });
-      }
-    } catch (error: any) {
-      console.log(error);
-      toast.error(error.response.data.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    initialize();
-  }, []);
 
-  const year = t("year");
-  const month = t("month");
-  const day = t("day");
-  const hour = t("hour");
-  const minute = t("minute");
-  const ago = t("ago");
-  const justNow = t("just_now");
   const direction = i18n.dir();
   const notificationReadSubmit = async () => {
     if (storing) return;
 
-    if (!notifications.submitted) {
+    if (!notifications.submitted && notifications.items) {
       try {
         setStoring(true);
-        const arr: string[] = [];
-        notifications.items.forEach((item: Notification) => {
-          if (!item.is_read) arr.push(item.id);
-        });
-        const response = await axiosClient.put("notifications", {
-          ids: arr,
-        });
+        const response = await axiosClient.put("notifications");
         if (response.status == 200) {
           setNotifications((prev) => ({
             ...prev,
-            items: prev.items.map((item) =>
+            items: (prev.items ?? []).map((item) =>
               !item.is_read ? { ...item, is_read: true } : item
             ),
             submitted: true,
@@ -97,7 +73,32 @@ function Notifications() {
       }
     }
   };
+  const fetchPosts = async (pageNumber: number) => {
+    try {
+      const res = await axiosClient.get(
+        `notifications?_limit=${PAGE_SIZE}&_page=${pageNumber}`
+      );
+      const data: Notification[] = res.data.notifications;
 
+      setNotifications((prev) => ({
+        items: [...(prev.items ?? []), ...data],
+        submitted: res.data?.unread_count == 0 ? true : false,
+        unreadCount: res.data?.unread_count,
+      }));
+
+      if (data.length < PAGE_SIZE) {
+        setHasMore(false);
+      }
+    } catch (e) {
+      console.error("Error fetching posts", e);
+    } finally {
+      isFetchingRef.current = false; // Unlock after fetch
+    }
+  };
+  useEffect(() => {
+    setNotifications((prev) => ({ ...prev, items: undefined }));
+    setHasMore(true);
+  }, [i18n.language]);
   return (
     <DropdownMenu dir={direction} onOpenChange={notificationReadSubmit}>
       <DropdownMenuTrigger asChild>
@@ -110,46 +111,24 @@ function Notifications() {
           )}
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="max-h-[50svh] w-[200px] sm:w-[300px] backdrop-blur-md z-40 overflow-y-auto rtl:text-md-rtl ltr:text-lg-ltr">
-        <DropdownMenuLabel>
-          <h1>{t("notifications")}</h1>
+      <DropdownMenuContent className="max-h-[50svh] p-0 w-[200px] sm:w-[300px] backdrop-blur-md z-40 overflow-y-auto">
+        <DropdownMenuLabel className="rtl:text-md-rtl pt-3 ltr:text-xl-ltr font-semibold">
+          {t("notifications")}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {loading ? (
-          <>
-            <Shimmer className="h-10" />
-            <Shimmer className="h-10 mt-2" />
-          </>
-        ) : notifications.items.length == 0 ? (
-          <h1 className="text-center py-4">{t("no_notification")}</h1>
-        ) : (
-          notifications.items.map((item: Notification, index: number) => (
-            <DropdownMenuItem
-              className={cn(
-                "rtl:justify-end rounded-none hover:bg-primary/5",
-                index != 0 && "border-t"
-              )}
-              key={index}
-            >
-              <NotificationItem
-                item={item}
-                year={year}
-                month={month}
-                day={day}
-                hour={hour}
-                minute={minute}
-                ago={ago}
-                justNow={justNow}
-              />
-            </DropdownMenuItem>
-          ))
-        )}
+        <InfiniteScrollOnGivenDiv
+          notifications={notifications}
+          isFetchingRef={isFetchingRef}
+          SCROLL_THRESHOLD={SCROLL_THRESHOLD}
+          fetchPosts={fetchPosts}
+          hasMore={hasMore}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
 
-const NotificationItem = ({
+export const NotificationItem = ({
   item,
   year,
   month,
@@ -171,17 +150,15 @@ const NotificationItem = ({
     const diffInYears = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 365)); // Approximate years
 
     if (diffInYears > 0) {
-      return `${diffInYears} ${year}${diffInYears !== 1 ? "s" : ""} ${ago}`;
+      return `${diffInYears} ${year} ${ago}`;
     } else if (diffInMonths > 0) {
-      return `${diffInMonths} ${month}${diffInMonths !== 1 ? "s" : ""} ${ago}`;
+      return `${diffInMonths} ${month} ${ago}`;
     } else if (diffInDays > 0) {
-      return `${diffInDays} ${day}${diffInDays !== 1 ? "s" : ""} ${ago}`;
+      return `${diffInDays} ${day} ${ago}`;
     } else if (diffInHours > 0) {
-      return `${diffInHours} ${hour}${diffInHours !== 1 ? "s" : ""} ${ago}`;
+      return `${diffInHours} ${hour} ${ago}`;
     } else if (diffInMinutes > 0) {
-      return `${diffInMinutes} ${minute}${
-        diffInMinutes !== 1 ? "s" : ""
-      } ${ago}`;
+      return `${diffInMinutes} ${minute} ${ago}`;
     } else {
       return justNow;
     }
@@ -189,7 +166,7 @@ const NotificationItem = ({
   return (
     <div
       className={cn(
-        "flex flex-col cursor-pointer items-start p-1 gap-x-[2px] w-full relative",
+        "flex flex-col cursor-pointer items-start p-1 gap-x-[2px] w-full relative rtl:text-sm-rtl pt-3 ltr:text-xl-ltr",
         !item.is_read && "bg-slate-400/15 rounded-md"
       )}
     >
