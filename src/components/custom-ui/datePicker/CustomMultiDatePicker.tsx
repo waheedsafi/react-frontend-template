@@ -74,7 +74,7 @@ export default function CustomMultiDatePicker(
           onChange={handleDateChange}
           months={months}
           range
-          plugins={[<DatePanel />]}
+          plugins={[<DatePanel position="top" className="h-32" />]}
           calendar={state.systemLanguage.calendar}
           locale={state.systemLanguage.local}
         />

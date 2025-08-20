@@ -101,4 +101,7 @@ export type ErrorLogSearch =
   | "error_code"
   | "ip_address"
   | "exception_type";
+
+export type AuditSearch = "user" | "event";
+
 // application

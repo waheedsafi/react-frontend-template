@@ -228,7 +228,7 @@ function APICombobox(props: IAPIComboboxProps) {
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="p-0 z-50 rtl:text-xl-rtl ltr:text-lg-ltr ">
+        <PopoverContent className="p-0 w-44 xxl:w-full sm:w-72 z-50 rtl:text-xl-rtl ltr:text-lg-ltr ">
           <Command>
             <CommandInput
               placeholder={placeholderText}

@@ -10,7 +10,6 @@ import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import UnProtectedRoute from "@/routes/unprotected-route";
 import AuthenticatedRoute from "@/routes/authenticated-route";
-import LogsPage from "@/views/pages/auth-features/logs/logs-page";
 const SuperDashboardPage = lazy(
   () =>
     import("@/views/pages/auth-features/dashboard/super/super-dashboard-page")
@@ -47,7 +46,12 @@ const ContactUsPage = lazy(
 const AboutUsPage = lazy(
   () => import("@/views/pages/main-site/about-us/about-us-page")
 );
-
+const AuditPage = lazy(
+  () => import("@/views/pages/auth-features/audit/audit-page")
+);
+const LogsPage = lazy(
+  () => import("@/views/pages/auth-features/logs/logs-page")
+);
 export const getAuthRouter = (user: User, authenticated: boolean) => {
   const permissions: Map<string, UserPermission> = user.permissions;
   return (
@@ -158,6 +162,17 @@ export const getAuthRouter = (user: User, authenticated: boolean) => {
             />
           }
         />
+        <Route
+          path="audit"
+          element={
+            <ProtectedRoute
+              element={<AuditPage />}
+              routeName="audit"
+              permissions={permissions}
+              authenticated={authenticated}
+            />
+          }
+        />
       </Route>
       {/* Site Routes */}
       <Route path="/" element={<SiteLayout />}>
@@ -187,21 +202,6 @@ export const getAuthRouter = (user: User, authenticated: boolean) => {
     </Routes>
   );
 };
-// export const getGuestRouter = () => {
-//   return (
-//     <Routes>
-//       <Route path="/" element={<GuestLayout />}>
-//         <Route path="/login" element={<LoginPage />} />
-//         <Route path="/auth/user/login" element={<UserLoginPage />} />
-//       </Route>
-//       {/* Site Routes */}
-//       <Route path="/" element={<SiteLayout />}>
-//         {/* These routes will be passed as children */}
-//         {site}
-//       </Route>
-//     </Routes>
-//   );
-// };
 const site = (
   <Route path="/" element={<MainPage />}>
     {/* Default route (equivalent to `/`) */}

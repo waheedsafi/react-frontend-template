@@ -185,4 +185,19 @@ export interface ErrorLog {
   uri: string;
   trace: string;
 }
+export type Audit = {
+  id: string;
+  username: string;
+  user_id: string;
+  user_type: string;
+  event: string;
+  table: string;
+  auditable_id: string;
+  old_values: any;
+  new_values: any;
+  url: string;
+  ip_address: string;
+  user_agent: string;
+  created_at: string;
+};
 // Application
