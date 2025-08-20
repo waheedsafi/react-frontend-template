@@ -50,7 +50,7 @@ const AuditPage = lazy(
   () => import("@/views/pages/auth-features/audit/audit-page")
 );
 const LogsPage = lazy(
-  () => import("@/views/pages/auth-features/logs/logs-page")
+  () => import("@/views/pages/auth-features/log/logs-page")
 );
 export const getAuthRouter = (user: User, authenticated: boolean) => {
   const permissions: Map<string, UserPermission> = user.permissions;
