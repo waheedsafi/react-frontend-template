@@ -9,7 +9,7 @@ import {
 import { CACHE } from "@/lib/constants";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useSearchParams } from "react-router";
+import { useNavigate, useParams, useSearchParams } from "react-router";
 import axiosClient from "@/lib/axois-client";
 import TableRowIcon from "@/components/custom-ui/table/TableRowIcon";
 import Pagination from "@/components/custom-ui/table/Pagination";
@@ -35,6 +35,8 @@ import { useDebounce } from "@/hook/use-debounce";
 export function Activity() {
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState("");
+  let { id } = useParams();
+
   const debouncedValue = useDebounce(inputValue, 500);
   const { updateComponentCache, getComponentCache } = useCacheDB();
   const [searchParams] = useSearchParams();
@@ -241,9 +243,10 @@ export function Activity() {
                   queryParams.set("sch_col", filterName);
                   queryParams.set("sch_val", filters.search.value);
                   setDateToURL(queryParams, filters.date);
-                  navigate(`/activity?${queryParams.toString()}`, {
-                    replace: true,
-                  });
+                  navigate(
+                    `/dashboard/activity/${id}?${queryParams.toString()}`,
+                    { replace: true }
+                  );
                 }
               }}
               orderOnComplete={async (filterName: Order) => {
@@ -253,9 +256,10 @@ export function Activity() {
                   queryParams.set("sch_col", filters.search.column);
                   queryParams.set("sch_val", filters.search.value);
                   setDateToURL(queryParams, filters.date);
-                  navigate(`/activity?${queryParams.toString()}`, {
-                    replace: true,
-                  });
+                  navigate(
+                    `/dashboard/activity/${id}?${queryParams.toString()}`,
+                    { replace: true }
+                  );
                 }
               }}
               dateOnComplete={(selectedDates: DateObject[]) => {
@@ -265,9 +269,10 @@ export function Activity() {
                   queryParams.set("sch_col", filters.search.column);
                   queryParams.set("sch_val", filters.search.value);
                   setDateToURL(queryParams, selectedDates);
-                  navigate(`/activity?${queryParams.toString()}`, {
-                    replace: true,
-                  });
+                  navigate(
+                    `/dashboard/activity/${id}?${queryParams.toString()}`,
+                    { replace: true }
+                  );
                 }
               }}
               filtersShowData={{

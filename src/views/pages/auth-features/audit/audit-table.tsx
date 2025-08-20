@@ -629,31 +629,7 @@ export function AuditTable() {
           <Pagination
             lastPage={audits.unFilterList.lastPage}
             onPageChange={async (page) => {
-              try {
-                const count = await getComponentCache(
-                  CACHE.AUDIT_TABLE_PAGINATION_COUNT
-                );
-                const response = await axiosClient.get(`audits/${page}`, {
-                  params: {
-                    per_page: count ? count.value : 10,
-                  },
-                });
-                const fetch = response.data.audits.data as Audit[];
-
-                const item = {
-                  currentPage: page,
-                  data: fetch,
-                  lastPage: audits.unFilterList.lastPage,
-                  totalItems: audits.unFilterList.totalItems,
-                  perPage: audits.unFilterList.perPage,
-                };
-                setAudits({
-                  filterList: item,
-                  unFilterList: item,
-                });
-              } catch (error: any) {
-                toast.error(error.response.data.message);
-              }
+              await initialize(undefined, undefined, page);
             }}
           />
         </div>

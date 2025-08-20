@@ -1,5 +1,6 @@
 import APICombobox from "@/components/custom-ui/combobox/APICombobox";
 import CustomInput from "@/components/custom-ui/input/CustomInput";
+import PhoneInput from "@/components/custom-ui/input/phone-input";
 import { StepperContext } from "@/components/custom-ui/stepper/StepperContext";
 import { Mail, Phone, UserRound } from "lucide-react";
 import { useContext } from "react";
@@ -76,6 +77,7 @@ export default function AddUserInformation() {
           <Phone className="text-tertiary size-[18px] pointer-events-none" />
         }
       />
+      <PhoneInput />
       <APICombobox
         placeholderText={t("search_item")}
         errorText={t("no_item")}
